@@ -15,6 +15,7 @@ public abstract class WaveFunctionCollapse {
     }
 
     public void init(Grid grid) {
+        this.entropyMap = new int[grid.getWidth()][grid.getHeight()];
         this.grid = grid;
         collapse();
 
@@ -32,7 +33,6 @@ public abstract class WaveFunctionCollapse {
             int y = selectecCell.getPosition()[1];
             // update immediate one, neighbouring cells will be updated later
             updateCell(x, y);
-            updateEntropyMap(x, y);
             propagateConstraints(selectecCell);
         }
     }
@@ -49,7 +49,7 @@ public abstract class WaveFunctionCollapse {
             // update all neighbours
             updateCell(neighbourPos[0], neighbourPos[1]);
 
-            if (xyz.retainAll(neighbour.getAllowedNeighbours())) {
+            if (!xyz.retainAll(neighbour.getAllowedNeighbours())) {
                 continue;
             }
 
@@ -86,14 +86,11 @@ public abstract class WaveFunctionCollapse {
     }
 
     private void setFixedStates(Triplet... states) {
-        // TODO: Find a generic way to handle triplets: (x, y, state) pairs.
         for(Triplet t : states) {
-            Set<Tile> tiles = new HashSet<>(List.of(t.tiles));
-            grid.getTileSafe(t.x, t.y).removeSetsFromPotentialTiles(tiles);
+            Set<Tile> tiles = new HashSet<>(List.of(t.tiles()));
+            grid.getTileSafe(t.x(), t.y()).removeSetsFromPotentialTiles(tiles);
         }
     }
-
-    record Triplet(int x, int y, Tile... tiles) {}
 
     private Cell<?> findLowestEntropyCell() {
         return null;
@@ -105,6 +102,7 @@ public abstract class WaveFunctionCollapse {
 
     private void updateCell(int x, int y) {
         grid.getTile(x, y).updateNeighbours();
+        updateEntropyMap(x, y);
     }
 
 
