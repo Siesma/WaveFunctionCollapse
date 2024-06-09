@@ -25,7 +25,7 @@ public abstract class WaveFunctionCollapse {
         initPotentialStatesOfGrid();
         setFixedStates();
         computeEntropyMap();
-        while (true) {
+        while (hasFullyCollapsed()) {
 
             Cell<?> selectecCell = findLowestEntropyCell();
             if (selectecCell == null) break;
@@ -49,14 +49,25 @@ public abstract class WaveFunctionCollapse {
             // update all neighbours
             updateCell(neighbourPos[0], neighbourPos[1]);
 
-            if (!xyz.retainAll(neighbour.getAllowedNeighbours())) {
-                continue;
+            // retainAll??
+            if (!xyz.equals(neighbour.getAllowedNeighbours())) {
+                propagateConstraints(neighbour);
             }
 
             propagateConstraints(neighbour);
         }
     }
 
+    private boolean hasFullyCollapsed () {
+        for (int i = 0; i < grid.getWidth(); i++) {
+            for (int j = 0; j < grid.getHeight(); j++) {
+                if(!grid.getTile(i, j).isCollapsed()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     private List<Cell<?>> getNeighbourCandidates(int x, int y) {
         List<Cell<?>> neighbors = new ArrayList<>();
@@ -93,8 +104,22 @@ public abstract class WaveFunctionCollapse {
     }
 
     private Cell<?> findLowestEntropyCell() {
-        return null;
+        Cell<?> lowestEntropyCell = null;
+        int lowestEntropy = Integer.MAX_VALUE;
+
+        for (int x = 0; x < entropyMap.length; x++) {
+            for (int y = 0; y < entropyMap[x].length; y++) {
+                int entropy = entropyMap[x][y];
+                Cell<?> cell = grid.getTile(x, y);
+                if (entropy < lowestEntropy && !cell.isCollapsed()) {
+                    lowestEntropy = entropy;
+                    lowestEntropyCell = cell;
+                }
+            }
+        }
+        return lowestEntropyCell;
     }
+
 
     private void updateEntropyMap(int x, int y) {
         entropyMap[x][y] = grid.getTile(x, y).getAllowedNeighbours().size();

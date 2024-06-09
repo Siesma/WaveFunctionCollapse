@@ -24,6 +24,8 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
         this.potentialTiles.removeAll(alteredStates);
     }
 
+    abstract boolean isCollapsed ();
+
     abstract void initNeighbours();
 
     public void setState(Object state) {
