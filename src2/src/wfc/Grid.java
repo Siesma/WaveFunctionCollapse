@@ -44,4 +44,12 @@ public abstract class Grid {
         return new int[]{safeX, safeY};
     }
 
+    public int getWidth () {
+        return grid.length;
+    }
+
+    public int getHeight () {
+        return grid[0].length;
+    }
+
 }

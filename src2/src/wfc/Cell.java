@@ -1,20 +1,27 @@
 package wfc;
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Cell<T> implements Comparable<Cell<?>> {
+public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
 
     private int[] position;
     private T state;
 
-    private Set<T> possibleNeighbours;
+    private Set<Tile> potentialTiles;
 
     public Cell(int[] position, T state) {
         this.position = position;
         this.state = state;
-        this.possibleNeighbours = new HashSet<>();
+        this.potentialTiles = new HashSet<>();
+    }
+
+    protected void setPotentialTiles (Set<Tile> potentialTiles) {
+        this.potentialTiles.addAll(potentialTiles);
+    }
+
+    protected void removeSetsFromPotentialTiles(Set<Tile> alteredStates) {
+        this.potentialTiles.removeAll(alteredStates);
     }
 
     abstract void initNeighbours();

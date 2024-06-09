@@ -1,9 +1,6 @@
 package wfc;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class WaveFunctionCollapse {
 
@@ -24,9 +21,11 @@ public abstract class WaveFunctionCollapse {
     }
 
     private void collapse() {
-        computeEntropyMap();
+        initPotentialStatesOfGrid();
         setFixedStates();
+        computeEntropyMap();
         while (true) {
+
             Cell<?> selectecCell = findLowestEntropyCell();
             if (selectecCell == null) break;
             int x = selectecCell.getPosition()[0];
@@ -41,8 +40,8 @@ public abstract class WaveFunctionCollapse {
     private void propagateConstraints(Cell<?> parent) {
         int[] pos = parent.getPosition();
         List<Cell<?>> possibleNeighbours = getNeighbourCandidates(pos[0], pos[1]);
-        for(Cell<?> neighbour : possibleNeighbours) {
-            if(neighbour.compareTo(parent) == 0) {
+        for (Cell<?> neighbour : possibleNeighbours) {
+            if (neighbour.compareTo(parent) == 0) {
                 continue;
             }
             int[] neighbourPos = neighbour.getPosition();
@@ -50,7 +49,7 @@ public abstract class WaveFunctionCollapse {
             // update all neighbours
             updateCell(neighbourPos[0], neighbourPos[1]);
 
-            if(xyz.retainAll(neighbour.getAllowedNeighbours())) {
+            if (xyz.retainAll(neighbour.getAllowedNeighbours())) {
                 continue;
             }
 
@@ -61,10 +60,10 @@ public abstract class WaveFunctionCollapse {
 
     private List<Cell<?>> getNeighbourCandidates(int x, int y) {
         List<Cell<?>> neighbors = new ArrayList<>();
-        if (x > 0) neighbors.add(grid.getTileSafe(x-1, y));
-        if (x < entropyMap.length - 1) neighbors.add(grid.getTileSafe(x+1,y));
-        if (y > 0) neighbors.add(grid.getTileSafe(x,y-1));
-        if (y < entropyMap[x].length - 1) neighbors.add(grid.getTileSafe(x,y+1));
+        if (x > 0) neighbors.add(grid.getTileSafe(x - 1, y));
+        if (x < entropyMap.length - 1) neighbors.add(grid.getTileSafe(x + 1, y));
+        if (y > 0) neighbors.add(grid.getTileSafe(x, y - 1));
+        if (y < entropyMap[x].length - 1) neighbors.add(grid.getTileSafe(x, y + 1));
         return neighbors;
     }
 
@@ -77,9 +76,24 @@ public abstract class WaveFunctionCollapse {
         }
     }
 
-    private void setFixedStates() {
-        // TODO: Find a generic way to handle triplets: (x, y, state) pairs.
+
+    private void initPotentialStatesOfGrid() {
+        for (int i = 0; i < grid.getWidth(); i++) {
+            for (int j = 0; j < grid.getHeight(); j++) {
+                grid.getTile(i, j).setPotentialTiles(allPossibleTiles);
+            }
+        }
     }
+
+    private void setFixedStates(Triplet... states) {
+        // TODO: Find a generic way to handle triplets: (x, y, state) pairs.
+        for(Triplet t : states) {
+            Set<Tile> tiles = new HashSet<>(List.of(t.tiles));
+            grid.getTileSafe(t.x, t.y).removeSetsFromPotentialTiles(tiles);
+        }
+    }
+
+    record Triplet(int x, int y, Tile... tiles) {}
 
     private Cell<?> findLowestEntropyCell() {
         return null;
@@ -90,7 +104,7 @@ public abstract class WaveFunctionCollapse {
     }
 
     private void updateCell(int x, int y) {
-
+        grid.getTile(x, y).updateNeighbours();
     }
 
 
