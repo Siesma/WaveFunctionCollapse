@@ -8,7 +8,7 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
     private int[] position;
     private T state;
 
-    private Set<Tile> potentialTiles;
+    protected Set<Tile> potentialTiles;
 
     public Cell(int[] position, T state) {
         this.position = position;
@@ -24,17 +24,19 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
         this.potentialTiles.removeAll(alteredStates);
     }
 
-    abstract boolean isCollapsed ();
-
-    abstract void initNeighbours();
+    public abstract boolean isCollapsed();
 
     public void setState(Object state) {
         this.state = (T) state;
     }
 
-    abstract Set<Cell<T>> getAllowedNeighbours();
+    public T getState() {
+        return state;
+    }
 
-    abstract void updateNeighbours();
+    public abstract Set<Tile> getAllowedNeighbours(Grid grid);
+
+    public abstract void updateNeighbours();
 
     public int[] getPosition() {
         return position;

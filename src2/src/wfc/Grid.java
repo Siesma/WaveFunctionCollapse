@@ -1,11 +1,17 @@
 package wfc;
 
+import java.util.Set;
+
 public abstract class Grid {
 
     Cell<?>[][] grid;
 
-    public Grid(int w, int h) {
+    private final Set<Tile> allPossibleTiles;
+
+    public Grid(int w, int h, Set<Tile> allPossibleTiles) {
         grid = new Cell[w][h];
+        this.allPossibleTiles = allPossibleTiles;
+
     }
 
     protected Cell<?> getTile(int x, int y) {
@@ -27,11 +33,11 @@ public abstract class Grid {
         setTile(newState, safePos[0], safePos[1]);
     }
 
-    protected void setStateOfTile (Object state, int x, int y) {
+    protected void setStateOfTile(Object state, int x, int y) {
         grid[x][y].setState(state);
     }
 
-    public void setStateOfTileSafe (Object state, int x, int y) {
+    public void setStateOfTileSafe(Object state, int x, int y) {
         int[] safePos = getSafePosition(x, y);
         setStateOfTile(state, safePos[0], safePos[1]);
     }
@@ -44,12 +50,15 @@ public abstract class Grid {
         return new int[]{safeX, safeY};
     }
 
-    public int getWidth () {
+    public int getWidth() {
         return grid.length;
     }
 
-    public int getHeight () {
+    public int getHeight() {
         return grid[0].length;
     }
 
+    public Set<Tile> getAllPossibleTiles() {
+        return allPossibleTiles;
+    }
 }
