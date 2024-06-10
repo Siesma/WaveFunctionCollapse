@@ -46,6 +46,7 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
     public void fixState() {
         Random random = new Random();
         int index = random.nextInt(0, potentialTiles.size());
+
         Tile newState = potentialTiles.iterator().next();
         for (int i = 0; i < index - 1; i++) {
             newState = potentialTiles.iterator().next();
@@ -88,6 +89,10 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
 
     public int[] getPosition() {
         return position;
+    }
+
+    public Set<Tile> getPotentialTiles() {
+        return potentialTiles;
     }
 
     @Override

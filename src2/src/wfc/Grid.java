@@ -16,11 +16,12 @@ public abstract class Grid {
         this.init();
     }
 
-    public void init () {
-        for(int i = 0; i < getWidth(); i++) {
-            for(int j = 0; j < getHeight(); j++) {
+    public void init() {
+        for (int i = 0; i < getWidth(); i++) {
+            for (int j = 0; j < getHeight(); j++) {
                 int[] cellPos = {i, j};
-                grid[i][j] = new Cell<Tile>(cellPos) {};
+                grid[i][j] = new Cell<Tile>(cellPos) {
+                };
             }
         }
     }
@@ -82,4 +83,22 @@ public abstract class Grid {
     public Set<Tile> getAllPossibleTiles() {
         return allPossibleTiles;
     }
+
+    public void printWaveStates() {
+        for (int i = 0; i < getWidth(); i++) {
+            for (int j = 0; j < getHeight(); j++) {
+                System.out.print("(");
+                for (Tile t : getAllPossibleTiles()) {
+                    if (getTile(i, j).getPotentialTiles().contains(t)) {
+                        System.out.printf(" %s ", 1);
+                    } else {
+                        System.out.printf(" %s ", 0);
+                    }
+                }
+                System.out.print(")");
+            }
+            System.out.println();
+        }
+    }
+
 }

@@ -118,8 +118,11 @@ public abstract class WaveFunctionCollapse {
 
     private void updateCell(int x, int y) {
         System.out.printf("Updating tile (%s, %s):\n", x, y);
+
+        grid.printWaveStates();
         grid.getTile(x, y).fixState();
         System.out.println(grid.getTile(x, y).isCollapsed());
+        grid.printWaveStates();
 
         grid.getTile(x, y).updateNeighbours(grid);
         updateEntropyMap(x, y);
