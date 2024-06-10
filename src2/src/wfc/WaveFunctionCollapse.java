@@ -19,7 +19,7 @@ public abstract class WaveFunctionCollapse {
         initPotentialStatesOfGrid();
         setFixedStates();
         computeEntropyMap();
-        while (hasFullyCollapsed()) {
+        while (!hasFullyCollapsed()) {
 
             Cell<?> selectecCell = findLowestEntropyCell();
 
@@ -34,7 +34,7 @@ public abstract class WaveFunctionCollapse {
 
     private void propagateConstraints(Cell<?> parent) {
         int[] pos = parent.getPosition();
-        List<Cell<?>> possibleNeighbours = getNeighbourCandidates(pos[0], pos[1]);
+        List<Cell<?>> possibleNeighbours = grid.getNeighbourCandidates(pos[0], pos[1]);
         for (Cell<?> neighbour : possibleNeighbours) {
             if (neighbour.compareTo(parent) == 0) {
                 continue;
@@ -43,12 +43,12 @@ public abstract class WaveFunctionCollapse {
                 continue;
             }
             int[] neighbourPos = neighbour.getPosition();
-            Set<Tile> xyz = new HashSet<>(neighbour.getAllowedNeighbours(grid));
+            Set<Tile> xyz = new HashSet<>(neighbour.getAllowedNeighbours());
             // update all neighbours
             updateCell(neighbourPos[0], neighbourPos[1]);
 
             // retainAll??
-            if (!xyz.equals(neighbour.getAllowedNeighbours(grid))) {
+            if (!xyz.equals(neighbour.getAllowedNeighbours())) {
                 propagateConstraints(neighbour);
             }
 
@@ -67,20 +67,10 @@ public abstract class WaveFunctionCollapse {
         return true;
     }
 
-    private List<Cell<?>> getNeighbourCandidates(int x, int y) {
-        List<Cell<?>> neighbors = new ArrayList<>();
-        if (x > 0) neighbors.add(grid.getTileSafe(x - 1, y));
-        if (x < entropyMap.length - 1) neighbors.add(grid.getTileSafe(x + 1, y));
-        if (y > 0) neighbors.add(grid.getTileSafe(x, y - 1));
-        if (y < entropyMap[x].length - 1) neighbors.add(grid.getTileSafe(x, y + 1));
-        return neighbors;
-    }
-
-
     private void computeEntropyMap() {
         for (int i = 0; i < entropyMap.length; i++) {
             for (int j = 0; j < entropyMap[i].length; j++) {
-                entropyMap[i][j] = grid.getTile(i, j).getAllowedNeighbours(grid).size();
+                entropyMap[i][j] = grid.getTile(i, j).getAllowedNeighbours().size();
             }
         }
     }
@@ -123,11 +113,15 @@ public abstract class WaveFunctionCollapse {
 
 
     private void updateEntropyMap(int x, int y) {
-        entropyMap[x][y] = grid.getTile(x, y).getAllowedNeighbours(grid).size();
+        entropyMap[x][y] = grid.getTile(x, y).getAllowedNeighbours().size();
     }
 
     private void updateCell(int x, int y) {
-        grid.getTile(x, y).updateNeighbours();
+        System.out.printf("Updating tile (%s, %s):\n", x, y);
+        grid.getTile(x, y).fixState();
+        System.out.println(grid.getTile(x, y).isCollapsed());
+
+        grid.getTile(x, y).updateNeighbours(grid);
         updateEntropyMap(x, y);
     }
 

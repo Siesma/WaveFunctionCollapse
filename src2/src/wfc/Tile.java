@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public enum Tile {
-    GROUND("Ground", new HashSet<>()) {
+    GROUND("0", new HashSet<>()) {
         @Override
         void addAdjacencyTiles() {
             getPotentialAdjacency().add(GROUND);
@@ -12,14 +12,14 @@ public enum Tile {
             getPotentialAdjacency().add(FOREST);
         }
     },
-    WATER("Water", new HashSet<>()) {
+    WATER("1", new HashSet<>()) {
         @Override
         void addAdjacencyTiles() {
             getPotentialAdjacency().add(WATER);
             getPotentialAdjacency().add(GROUND);
         }
     },
-    FOREST("Forest", new HashSet<>()) {
+    FOREST("2", new HashSet<>()) {
         @Override
         void addAdjacencyTiles() {
             getPotentialAdjacency().add(FOREST);
