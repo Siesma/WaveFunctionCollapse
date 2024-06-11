@@ -21,7 +21,7 @@ public abstract class WaveFunctionCollapse {
         computeEntropyMap();
         while (!hasFullyCollapsed()) {
 
-            Cell<?> selectecCell = findLowestEntropyCell();
+            Cell<?> selectecCell = findRandomLowestEntropyCell();
 
             if (selectecCell == null) break;
             int x = selectecCell.getPosition()[0];
@@ -39,7 +39,7 @@ public abstract class WaveFunctionCollapse {
             if (neighbour.compareTo(parent) == 0) {
                 continue;
             }
-            if(neighbour.isCollapsed()) {
+            if (neighbour.isCollapsed()) {
                 continue;
             }
             int[] neighbourPos = neighbour.getPosition();
@@ -56,10 +56,10 @@ public abstract class WaveFunctionCollapse {
         }
     }
 
-    private boolean hasFullyCollapsed () {
+    private boolean hasFullyCollapsed() {
         for (int i = 0; i < grid.getWidth(); i++) {
             for (int j = 0; j < grid.getHeight(); j++) {
-                if(!grid.getTile(i, j).isCollapsed()) {
+                if (!grid.getTile(i, j).isCollapsed()) {
                     return false;
                 }
             }
@@ -85,30 +85,40 @@ public abstract class WaveFunctionCollapse {
     }
 
     private void setFixedStates(Triplet... states) {
-        for(Triplet t : states) {
+        for (Triplet t : states) {
             Set<Tile> tiles = new HashSet<>(List.of(t.tiles()));
             grid.getTileSafe(t.x(), t.y()).removeSetsFromPotentialTiles(tiles);
         }
     }
 
-    private Cell<?> findLowestEntropyCell() {
-        Cell<?> lowestEntropyCell = null;
+    private Cell<?> findRandomLowestEntropyCell() {
+        List<Cell<?>> lowestEntropyCells = new ArrayList<>();
         int lowestEntropy = Integer.MAX_VALUE;
 
         for (int x = 0; x < entropyMap.length; x++) {
             for (int y = 0; y < entropyMap[x].length; y++) {
                 int entropy = entropyMap[x][y];
                 Cell<?> cell = grid.getTile(x, y);
-                if(cell.isCollapsed()) {
+                if (cell.isCollapsed()) {
                     continue;
                 }
                 if (entropy < lowestEntropy) {
                     lowestEntropy = entropy;
-                    lowestEntropyCell = cell;
+                    lowestEntropyCells.clear();
+                    lowestEntropyCells.add(cell);
+                } else if (entropy == lowestEntropy) {
+                    lowestEntropyCells.add(cell);
                 }
             }
         }
-        return lowestEntropyCell;
+
+        if (lowestEntropyCells.isEmpty()) {
+            return null; // If no cell was found, return null
+        }
+
+        // Randomly select one of the lowest entropy cells
+        Random random = new Random();
+        return lowestEntropyCells.get(random.nextInt(lowestEntropyCells.size()));
     }
 
 

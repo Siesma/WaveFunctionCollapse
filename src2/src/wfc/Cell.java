@@ -1,9 +1,6 @@
 package wfc;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
 
@@ -45,18 +42,19 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
 
     public void fixState() {
         Random random = new Random();
-        int index = random.nextInt(0, potentialTiles.size());
 
-        Tile newState = potentialTiles.iterator().next();
-        for (int i = 0; i < index - 1; i++) {
-            newState = potentialTiles.iterator().next();
-        }
-        System.out.println("\t Setting tile to: " + newState.getRepresentation());
+        List<Tile> tileList = new ArrayList<>(potentialTiles);
+
+        int index = random.nextInt(tileList.size());
+
+        Tile newState = tileList.get(index);
+
+        System.out.println("\tSetting tile to: " + newState.getRepresentation());
         setState(newState);
-        HashSet<Tile> fixedTile = new HashSet<>();
-        fixedTile.add(newState);
-        this.potentialTiles.retainAll(fixedTile);
+
+        potentialTiles.retainAll(Collections.singleton(newState));
     }
+
 
     public Set<Tile> getAllowedNeighbours() {
         Set<Tile> allowedNeighbours = new HashSet<>();
@@ -75,10 +73,6 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
     public void updateNeighbours(Grid grid) {
         List<Cell<?>> neighbours = grid.getNeighbourCandidates(position[0], position[1]);
 
-        for (Cell<?> neighbour : neighbours) {
-            Set<Tile> allowedNeighbours = getAllowedNeighbours();
-            neighbour.removeSetsFromPotentialTiles(notIn(allowedNeighbours, neighbour.potentialTiles));
-        }
     }
 
     private Set<Tile> notIn(Set<Tile> allowed, Set<Tile> neighbourPotential) {
