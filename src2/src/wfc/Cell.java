@@ -72,7 +72,7 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
 
     public void updateNeighbours(Grid grid) {
         List<Cell<?>> neighbours = grid.getNeighbourCandidates(position[0], position[1]);
-
+        // TODO: Implement potential states
     }
 
     private Set<Tile> notIn(Set<Tile> allowed, Set<Tile> neighbourPotential) {
