@@ -6,25 +6,31 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
 
     private int[] position;
     private Tile state;
-    protected Set<Tile> potentialTiles;
+    protected List<Tile> potentialTiles;
+
+    private int numTiles = -1;
+
 
     public Cell(int[] position) {
         this.position = position;
-        this.potentialTiles = new HashSet<>();
+        this.potentialTiles = new ArrayList<>();
+        this.numTiles = 0;
     }
 
     protected void setPotentialTiles(Set<Tile> potentialTiles) {
         this.potentialTiles.addAll(potentialTiles);
+        this.numTiles = potentialTiles.size();
     }
 
     protected void removeSetsFromPotentialTiles(Set<Tile> alteredStates) {
         this.potentialTiles.removeAll(alteredStates);
+        this.numTiles = potentialTiles.size();
     }
 
     public boolean isCollapsed() {
-        boolean collapsed = potentialTiles.size() == 1;
+        boolean collapsed = numTiles == 1;
         if (collapsed) {
-            this.state = potentialTiles.iterator().next();
+            this.state = potentialTiles.get(0);
         }
         return collapsed;
     }
@@ -52,6 +58,7 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
         setState(newState);
 
         potentialTiles.retainAll(Collections.singleton(newState));
+        this.numTiles = 1;
     }
 
 
@@ -84,8 +91,10 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
             allowedOnes.retainAll(neighbour.getAllowedNeighbours());
         }
 
-        this.potentialTiles.retainAll(allowedOnes);
-
+        boolean change = this.potentialTiles.retainAll(allowedOnes);
+        if(change) {
+            this.numTiles = potentialTiles.size();
+        }
     }
 
     private Set<Tile> notIn(Set<Tile> allowed, Set<Tile> neighbourPotential) {
@@ -98,7 +107,7 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
         return position;
     }
 
-    public Set<Tile> getPotentialTiles() {
+    public List<Tile> getPotentialTiles() {
         return potentialTiles;
     }
 
