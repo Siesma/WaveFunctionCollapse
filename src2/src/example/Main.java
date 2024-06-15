@@ -15,7 +15,9 @@ public class Main {
         set.add(Tile.WATER);
         set.add(Tile.GROUND);
 
-        TileGrid grid = new TileGrid(10, 10, set);
+        int n = 10;
+
+        TileGrid grid = new TileGrid(n, n, set);
         WaveFunctionCollapse wfc = new WaveFunctionCollapse() {};
         wfc.init(grid);
 

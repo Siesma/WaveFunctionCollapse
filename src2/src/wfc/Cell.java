@@ -49,7 +49,6 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
 
         Tile newState = tileList.get(index);
 
-        System.out.println("\tSetting tile to: " + newState.getRepresentation());
         setState(newState);
 
         potentialTiles.retainAll(Collections.singleton(newState));
@@ -71,8 +70,22 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
 
 
     public void updateNeighbours(Grid grid) {
+        if(isCollapsed()) {
+            return;
+        }
         List<Cell<?>> neighbours = grid.getNeighbourCandidates(position[0], position[1]);
-        // TODO: Implement potential states
+
+        List<Tile> allowedOnes = new ArrayList<>(grid.getAllPossibleTiles());
+
+        for(Cell<?> neighbour : neighbours) {
+            if(neighbour.isCollapsed()) {
+                continue;
+            }
+            allowedOnes.retainAll(neighbour.getAllowedNeighbours());
+        }
+
+        this.potentialTiles.retainAll(allowedOnes);
+
     }
 
     private Set<Tile> notIn(Set<Tile> allowed, Set<Tile> neighbourPotential) {

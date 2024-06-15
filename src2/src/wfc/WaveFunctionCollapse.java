@@ -20,14 +20,12 @@ public abstract class WaveFunctionCollapse {
         setFixedStates();
         computeEntropyMap();
         while (!hasFullyCollapsed()) {
-
             Cell<?> selectecCell = findRandomLowestEntropyCell();
 
             if (selectecCell == null) break;
-            int x = selectecCell.getPosition()[0];
-            int y = selectecCell.getPosition()[1];
-            // update immediate one, neighbouring cells will be updated later
-            updateCell(x, y);
+            collapseState(selectecCell.getPosition()[0], selectecCell.getPosition()[1]);
+
+            updateNeighbours(selectecCell.getPosition()[0], selectecCell.getPosition()[1]);
             propagateConstraints(selectecCell);
         }
     }
@@ -43,16 +41,13 @@ public abstract class WaveFunctionCollapse {
                 continue;
             }
             int[] neighbourPos = neighbour.getPosition();
-            Set<Tile> xyz = new HashSet<>(neighbour.getAllowedNeighbours());
-            // update all neighbours
-            updateCell(neighbourPos[0], neighbourPos[1]);
+            Set<Tile> previousState = new HashSet<>(neighbour.getAllowedNeighbours());
+            updateNeighbours(neighbourPos[0], neighbourPos[1]);
 
             // retainAll??
-            if (!xyz.equals(neighbour.getAllowedNeighbours())) {
+            if (!previousState.equals(neighbour.getAllowedNeighbours())) {
                 propagateConstraints(neighbour);
             }
-
-            propagateConstraints(neighbour);
         }
     }
 
@@ -126,14 +121,11 @@ public abstract class WaveFunctionCollapse {
         entropyMap[x][y] = grid.getTile(x, y).getAllowedNeighbours().size();
     }
 
-    private void updateCell(int x, int y) {
-        System.out.printf("Updating tile (%s, %s):\n", x, y);
-
-        grid.printWaveStates();
+    private void collapseState(int x, int y) {
         grid.getTile(x, y).fixState();
-        System.out.println(grid.getTile(x, y).isCollapsed());
-        grid.printWaveStates();
+    }
 
+    private void updateNeighbours (int x, int y) {
         grid.getTile(x, y).updateNeighbours(grid);
         updateEntropyMap(x, y);
     }

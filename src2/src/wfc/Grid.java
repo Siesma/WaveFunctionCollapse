@@ -20,8 +20,7 @@ public abstract class Grid {
         for (int i = 0; i < getWidth(); i++) {
             for (int j = 0; j < getHeight(); j++) {
                 int[] cellPos = {i, j};
-                grid[i][j] = new Cell<Tile>(cellPos) {
-                };
+                grid[i][j] = new Cell<Tile>(cellPos) {};
             }
         }
     }
