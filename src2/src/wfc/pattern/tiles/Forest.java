@@ -12,18 +12,17 @@ public class Forest implements Tile {
 
     static {
         adjacencies = new HashSet<>();
-
-        adjacencies.add(Tiles.getTile("2"));
-        adjacencies.add(Tiles.getTile("1"));
     }
 
     @Override
     public Set<Tile> getPotentialAdjacency() {
+        adjacencies.add(Tiles.getTile("Forest"));
+        adjacencies.add(Tiles.getTile("Water"));
         return adjacencies;
     }
 
     @Override
     public String getRepresentation() {
-        return "2";
+        return "Forest";
     }
 }

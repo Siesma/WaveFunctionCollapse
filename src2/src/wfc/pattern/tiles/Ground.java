@@ -12,19 +12,18 @@ public class Ground implements Tile {
 
     static {
         adjacencies = new HashSet<>();
-
-        adjacencies.add(Tiles.getTile("2"));
-        adjacencies.add(Tiles.getTile("1"));
-        adjacencies.add(Tiles.getTile("0"));
     }
 
     @Override
     public Set<Tile> getPotentialAdjacency() {
+        adjacencies.add(Tiles.getTile("Forest"));
+        adjacencies.add(Tiles.getTile("Water"));
+        adjacencies.add(Tiles.getTile("Ground"));
         return adjacencies;
     }
 
     @Override
     public String getRepresentation() {
-        return "0";
+        return "Ground";
     }
 }

@@ -75,31 +75,19 @@ public abstract class Cell implements Comparable<Cell> {
     }
 
 
-    public void updateNeighbours(Grid grid) {
-        if(isCollapsed()) {
-            return;
-        }
+    public void updateNeighbours(Grid grid, int[][] entropyMap) {
+
+        updateEntropy(entropyMap);
+
         List<Cell> neighbours = grid.getNeighbourCandidates(position[0], position[1]);
-
-        List<Tile> allowedOnes = new ArrayList<>(grid.getAllPossibleTiles());
-
         for(Cell neighbour : neighbours) {
             if(neighbour.isCollapsed()) {
                 continue;
             }
-            allowedOnes.retainAll(neighbour.getAllowedNeighbours());
+            neighbour.potentialTiles.retainAll(this.getState().getPotentialAdjacency());
+            neighbour.updateEntropy(entropyMap);
         }
 
-        boolean change = this.potentialTiles.retainAll(allowedOnes);
-        if(change) {
-            this.numTiles = potentialTiles.size();
-        }
-    }
-
-    private Set<Tile> notIn(Set<Tile> allowed, Set<Tile> neighbourPotential) {
-        Set<Tile> notIn = new HashSet<>(neighbourPotential);
-        notIn.removeAll(allowed);
-        return notIn;
     }
 
     public int[] getPosition() {
@@ -108,6 +96,14 @@ public abstract class Cell implements Comparable<Cell> {
 
     public List<Tile> getPotentialTiles() {
         return potentialTiles;
+    }
+
+    private void updateEntropy (int[][] entropyMap) {
+        entropyMap[position[0]][position[1]] = computeEntropy();
+    }
+
+    private int computeEntropy () {
+        return getPotentialTiles().size() - 1;
     }
 
     @Override

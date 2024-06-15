@@ -85,10 +85,10 @@ public abstract class Grid {
         return allPossibleTiles;
     }
 
-    public void printWaveStates() {
+    public void printWaveStates(int[][] entropyMap) {
         for (int i = 0; i < getWidth(); i++) {
             for (int j = 0; j < getHeight(); j++) {
-                System.out.print("(");
+                System.out.print(" (");
                 for (Tile t : getAllPossibleTiles()) {
                     if (getTile(i, j).getPotentialTiles().contains(t)) {
                         System.out.printf(" %s ", 1);
@@ -96,7 +96,8 @@ public abstract class Grid {
                         System.out.printf(" %s ", 0);
                     }
                 }
-                System.out.print(")");
+                System.out.print(" | " + entropyMap[i][j] + " ");
+                System.out.print(") ");
             }
             System.out.println();
         }

@@ -117,19 +117,12 @@ public abstract class WaveFunctionCollapse {
         return lowestEntropyCells.get(random.nextInt(lowestEntropyCells.size()));
     }
 
-
-    private void updateEntropyMap(int x, int y) {
-        entropyMap[x][y] = grid.getTile(x, y).getAllowedNeighbours().size();
-    }
-
     private void collapseState(int x, int y) {
-        grid.printWaveStates();
         grid.getTile(x, y).fixState();
     }
 
     private void updateNeighbours (int x, int y) {
-        grid.getTile(x, y).updateNeighbours(grid);
-        updateEntropyMap(x, y);
+        grid.getTile(x, y).updateNeighbours(grid, entropyMap);
     }
 
 

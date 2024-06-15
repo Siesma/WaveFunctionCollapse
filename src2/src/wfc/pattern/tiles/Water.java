@@ -12,18 +12,17 @@ public class Water implements Tile {
 
     static {
         adjacencies = new HashSet<>();
-
-        adjacencies.add(Tiles.getTile("0"));
-        adjacencies.add(Tiles.getTile("1"));
     }
 
     @Override
     public Set<Tile> getPotentialAdjacency() {
+        adjacencies.add(Tiles.getTile("Ground"));
+        adjacencies.add(Tiles.getTile("Water"));
         return adjacencies;
     }
 
     @Override
     public String getRepresentation() {
-        return "1";
+        return "Water";
     }
 }

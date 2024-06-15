@@ -23,7 +23,6 @@ public class Main {
 
         HashSet<Tile> set = Tiles.allTiles();
 
-
         int n = 3;
 
         int maxTries = 1;
