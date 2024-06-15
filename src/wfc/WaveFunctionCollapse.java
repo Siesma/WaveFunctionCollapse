@@ -81,13 +81,14 @@ public abstract class WaveFunctionCollapse {
     }
 
     private void setFixedStates(Triplet... states) {
-//        for (Triplet t : states) {
-//            Set<Tile> tiles = new HashSet<>(List.of(t.tiles()));
-//            grid.getTileSafe(t.x(), t.y()).removeSetsFromPotentialTiles(tiles);
-//        }
+        for (Triplet t : states) {
+            Set<Tile> tiles = new HashSet<>(List.of(t.tiles()));
+            grid.getTileSafe(t.x(), t.y()).removeSetsFromPotentialTiles(tiles);
+        }
     }
 
     private Cell findRandomLowestEntropyCell() {
+        // TODO: Improve efficiency, takes approximately 80% of compute time
         List<Cell> lowestEntropyCells = new ArrayList<>();
         int lowestEntropy = Integer.MAX_VALUE;
 

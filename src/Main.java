@@ -61,7 +61,7 @@ public class Main extends PApplet {
         allExistingTiles = Tiles.allTiles();
 
 
-        int n = 10;
+        int n = 100;
 
         int maxTries = 1;
 
