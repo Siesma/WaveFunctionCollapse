@@ -24,7 +24,7 @@ public class Main extends PApplet {
 
         HashSet<Tile> set = Tiles.allTiles();
 
-        int n = 3;
+        int n = 10;
 
         int maxTries = 1;
 
