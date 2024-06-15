@@ -17,7 +17,7 @@ public class Forest implements Tile {
     @Override
     public Set<Tile> getPotentialAdjacency() {
         adjacencies.add(Tiles.getTile("Forest"));
-        adjacencies.add(Tiles.getTile("Water"));
+        adjacencies.add(Tiles.getTile("Ground"));
         return adjacencies;
     }
 
