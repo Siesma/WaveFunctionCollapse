@@ -1,5 +1,7 @@
 package wfc;
 
+import wfc.pattern.Tile;
+
 import java.util.*;
 
 public abstract class WaveFunctionCollapse {
@@ -12,7 +14,6 @@ public abstract class WaveFunctionCollapse {
         this.entropyMap = new int[grid.getWidth()][grid.getHeight()];
         this.grid = grid;
         collapse();
-
     }
 
     private void collapse() {
@@ -20,7 +21,7 @@ public abstract class WaveFunctionCollapse {
         setFixedStates();
         computeEntropyMap();
         while (!hasFullyCollapsed()) {
-            Cell<?> selectecCell = findRandomLowestEntropyCell();
+            Cell selectecCell = findRandomLowestEntropyCell();
 
             if (selectecCell == null) break;
             collapseState(selectecCell.getPosition()[0], selectecCell.getPosition()[1]);
@@ -30,10 +31,10 @@ public abstract class WaveFunctionCollapse {
         }
     }
 
-    private void propagateConstraints(Cell<?> parent) {
+    private void propagateConstraints(Cell parent) {
         int[] pos = parent.getPosition();
-        List<Cell<?>> possibleNeighbours = grid.getNeighbourCandidates(pos[0], pos[1]);
-        for (Cell<?> neighbour : possibleNeighbours) {
+        List<Cell> possibleNeighbours = grid.getNeighbourCandidates(pos[0], pos[1]);
+        for (Cell neighbour : possibleNeighbours) {
             if (neighbour.compareTo(parent) == 0) {
                 continue;
             }
@@ -80,20 +81,20 @@ public abstract class WaveFunctionCollapse {
     }
 
     private void setFixedStates(Triplet... states) {
-        for (Triplet t : states) {
-            Set<Tile> tiles = new HashSet<>(List.of(t.tiles()));
-            grid.getTileSafe(t.x(), t.y()).removeSetsFromPotentialTiles(tiles);
-        }
+//        for (Triplet t : states) {
+//            Set<Tile> tiles = new HashSet<>(List.of(t.tiles()));
+//            grid.getTileSafe(t.x(), t.y()).removeSetsFromPotentialTiles(tiles);
+//        }
     }
 
-    private Cell<?> findRandomLowestEntropyCell() {
-        List<Cell<?>> lowestEntropyCells = new ArrayList<>();
+    private Cell findRandomLowestEntropyCell() {
+        List<Cell> lowestEntropyCells = new ArrayList<>();
         int lowestEntropy = Integer.MAX_VALUE;
 
         for (int x = 0; x < entropyMap.length; x++) {
             for (int y = 0; y < entropyMap[x].length; y++) {
                 int entropy = entropyMap[x][y];
-                Cell<?> cell = grid.getTile(x, y);
+                Cell cell = grid.getTile(x, y);
                 if (cell.isCollapsed()) {
                     continue;
                 }
@@ -122,6 +123,7 @@ public abstract class WaveFunctionCollapse {
     }
 
     private void collapseState(int x, int y) {
+        grid.printWaveStates();
         grid.getTile(x, y).fixState();
     }
 

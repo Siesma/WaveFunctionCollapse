@@ -1,12 +1,14 @@
 package wfc;
 
+import wfc.pattern.Tile;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public abstract class Grid {
 
-    Cell<?>[][] grid;
+    Cell[][] grid;
 
     private final Set<Tile> allPossibleTiles;
 
@@ -20,14 +22,14 @@ public abstract class Grid {
         for (int i = 0; i < getWidth(); i++) {
             for (int j = 0; j < getHeight(); j++) {
                 int[] cellPos = {i, j};
-                grid[i][j] = new Cell<Tile>(cellPos) {};
+                grid[i][j] = new Cell(cellPos) {};
             }
         }
     }
 
 
-    public List<Cell<?>> getNeighbourCandidates(int x, int y) {
-        List<Cell<?>> neighbors = new ArrayList<>();
+    public List<Cell> getNeighbourCandidates(int x, int y) {
+        List<Cell> neighbors = new ArrayList<>();
         if (x > 0) neighbors.add(getTileSafe(x - 1, y));
         if (x < getWidth() - 1) neighbors.add(getTileSafe(x + 1, y));
         if (y > 0) neighbors.add(getTileSafe(x, y - 1));
@@ -35,21 +37,21 @@ public abstract class Grid {
         return neighbors;
     }
 
-    protected Cell<?> getTile(int x, int y) {
+    protected Cell getTile(int x, int y) {
         return grid[x][y];
     }
 
-    public Cell<?> getTileSafe(int x, int y) {
+    public Cell getTileSafe(int x, int y) {
         int[] safePos = getSafePosition(x, y);
         return getTile(safePos[0], safePos[1]);
     }
 
-    protected void setTile(Cell<?> newState, int x, int y) {
+    protected void setTile(Cell newState, int x, int y) {
         grid[x][y] = newState;
     }
 
 
-    public void setTileSafe(Cell<?> newState, int x, int y) {
+    public void setTileSafe(Cell newState, int x, int y) {
         int[] safePos = getSafePosition(x, y);
         setTile(newState, safePos[0], safePos[1]);
     }

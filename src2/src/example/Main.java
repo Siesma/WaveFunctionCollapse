@@ -1,23 +1,32 @@
 package example;
 
 import wfc.Grid;
-import wfc.Tile;
 import wfc.WaveFunctionCollapse;
+import wfc.pattern.Tile;
+import wfc.pattern.Tiles;
+import wfc.pattern.tiles.Forest;
+import wfc.pattern.tiles.Ground;
+import wfc.pattern.tiles.Water;
 
 import java.util.HashSet;
 
 public class Main {
 
     public static void main(String[] args) {
-        HashSet<Tile> set = new HashSet<Tile>();
+        Tile forest = new Forest();
+        Tile ground = new Ground();
+        Tile water = new Water();
 
-        set.add(Tile.FOREST);
-        set.add(Tile.WATER);
-        set.add(Tile.GROUND);
+        Tiles.register(forest, forest.getRepresentation());
+        Tiles.register(ground, ground.getRepresentation());
+        Tiles.register(water, water.getRepresentation());
 
-        int n = 100;
+        HashSet<Tile> set = Tiles.allTiles();
 
-        int maxTries = 1000;
+
+        int n = 3;
+
+        int maxTries = 1;
 
         int tries = 0;
 
@@ -29,7 +38,8 @@ public class Main {
 
                 long start = System.currentTimeMillis();
 
-                WaveFunctionCollapse wfc = new WaveFunctionCollapse() {};
+                WaveFunctionCollapse wfc = new WaveFunctionCollapse() {
+                };
                 wfc.init(grid);
 
                 long end = System.currentTimeMillis();
@@ -39,10 +49,11 @@ public class Main {
                 System.out.printf("It took %s ms after %s tries", (end - start), tries);
                 return;
             } catch (Exception e) {
-                continue;
+
+                e.printStackTrace();
+
             }
         }
-
 
 
     }

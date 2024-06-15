@@ -1,8 +1,10 @@
 package wfc;
 
+import wfc.pattern.Tile;
+
 import java.util.*;
 
-public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
+public abstract class Cell implements Comparable<Cell> {
 
     private int[] position;
     private Tile state;
@@ -40,9 +42,6 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
     }
 
     public Tile getState() {
-        if (!isCollapsed()) {
-            return Tile.GROUND;
-        }
         return state;
     }
 
@@ -80,11 +79,11 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
         if(isCollapsed()) {
             return;
         }
-        List<Cell<?>> neighbours = grid.getNeighbourCandidates(position[0], position[1]);
+        List<Cell> neighbours = grid.getNeighbourCandidates(position[0], position[1]);
 
         List<Tile> allowedOnes = new ArrayList<>(grid.getAllPossibleTiles());
 
-        for(Cell<?> neighbour : neighbours) {
+        for(Cell neighbour : neighbours) {
             if(neighbour.isCollapsed()) {
                 continue;
             }
@@ -112,7 +111,7 @@ public abstract class Cell<T extends Tile> implements Comparable<Cell<?>> {
     }
 
     @Override
-    public int compareTo(Cell<?> other) {
+    public int compareTo(Cell other) {
         int mx = getPosition()[0];
         int my = getPosition()[1];
         int ox = getPosition()[0];

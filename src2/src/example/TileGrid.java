@@ -2,7 +2,7 @@ package example;
 
 import wfc.Cell;
 import wfc.Grid;
-import wfc.Tile;
+import wfc.pattern.Tile;
 
 import java.util.Set;
 
