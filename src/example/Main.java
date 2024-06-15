@@ -1,7 +1,5 @@
 package example;
 
-import processing.core.PApplet;
-import wfc.Grid;
 import wfc.WaveFunctionCollapse;
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;
@@ -11,7 +9,7 @@ import wfc.pattern.tiles.Water;
 
 import java.util.HashSet;
 
-public class Main extends PApplet {
+public class Main {
 
     public static void main(String[] args) {
         Tile forest = new Forest();
