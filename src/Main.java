@@ -54,14 +54,14 @@ public class Main extends PApplet {
         Tile ground = new Ground();
         Tile water = new Water();
 
-        Tiles.register(forest, forest.getRepresentation());
-        Tiles.register(ground, ground.getRepresentation());
-        Tiles.register(water, water.getRepresentation());
+        Tiles.registerTileCandidate(forest, forest.getRepresentation());
+        Tiles.registerTileCandidate(ground, ground.getRepresentation());
+        Tiles.registerTileCandidate(water, water.getRepresentation());
 
         allExistingTiles = Tiles.allTiles();
 
 
-        int n = 100;
+        int n = 200;
 
         int maxTries = 1;
 
@@ -78,6 +78,7 @@ public class Main extends PApplet {
                 WaveFunctionCollapse wfc = new WaveFunctionCollapse() {
                 };
                 wfc.init(grid);
+                wfc.collapse();
 
                 long end = System.currentTimeMillis();
 

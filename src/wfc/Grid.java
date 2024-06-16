@@ -29,6 +29,7 @@ public abstract class Grid {
 
 
     public List<Cell> getNeighbourCandidates(int x, int y) {
+        // TODO: Refactor using Tiles.getNeighbouringCandidates
         List<Cell> neighbors = new ArrayList<>();
         if (x > 0) neighbors.add(getTileSafe(x - 1, y));
         if (x < getWidth() - 1) neighbors.add(getTileSafe(x + 1, y));

@@ -1,6 +1,7 @@
 package wfc;
 
 import wfc.pattern.Tile;
+import wfc.pattern.Tiles;
 
 import java.util.*;
 
@@ -13,10 +14,10 @@ public abstract class WaveFunctionCollapse {
     public void init(Grid grid) {
         this.entropyMap = new int[grid.getWidth()][grid.getHeight()];
         this.grid = grid;
-        collapse();
+        Tiles.initDefaultNeighbouringCandidates();
     }
 
-    private void collapse() {
+    public void collapse() {
         initPotentialStatesOfGrid();
         setFixedStates();
         computeEntropyMap();

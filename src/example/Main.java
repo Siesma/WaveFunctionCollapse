@@ -16,9 +16,9 @@ public class Main {
         Tile ground = new Ground();
         Tile water = new Water();
 
-        Tiles.register(forest, forest.getRepresentation());
-        Tiles.register(ground, ground.getRepresentation());
-        Tiles.register(water, water.getRepresentation());
+        Tiles.registerTileCandidate(forest, forest.getRepresentation());
+        Tiles.registerTileCandidate(ground, ground.getRepresentation());
+        Tiles.registerTileCandidate(water, water.getRepresentation());
 
         HashSet<Tile> set = Tiles.allTiles();
 
@@ -39,6 +39,7 @@ public class Main {
                 WaveFunctionCollapse wfc = new WaveFunctionCollapse() {
                 };
                 wfc.init(grid);
+                wfc.collapse();
 
                 long end = System.currentTimeMillis();
 
