@@ -1,7 +1,6 @@
 package wfc;
 
 import wfc.pattern.Tile;
-import wfc.pattern.Tiles;
 
 import java.util.*;
 
