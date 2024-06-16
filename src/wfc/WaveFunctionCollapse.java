@@ -29,9 +29,9 @@ public abstract class WaveFunctionCollapse {
             Cell selectecCell = findRandomLowestEntropyCell();
 
             if (selectecCell == null) break;
-            boolean successfull = collapseState(selectecCell.getPosition()[0], selectecCell.getPosition()[1]);
+            boolean successful = collapseState(selectecCell.getPosition()[0], selectecCell.getPosition()[1]);
 
-            if(!successfull) {
+            if(!successful) {
                 return false;
             }
 
