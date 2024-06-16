@@ -1,9 +1,11 @@
 package wfc;
 
 import wfc.pattern.Tile;
+import wfc.pattern.Tiles;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class Grid {
@@ -22,20 +24,28 @@ public abstract class Grid {
         for (int i = 0; i < getWidth(); i++) {
             for (int j = 0; j < getHeight(); j++) {
                 int[] cellPos = {i, j};
-                grid[i][j] = new Cell(cellPos) {};
+                grid[i][j] = new Cell(cellPos) {
+                };
             }
         }
     }
-
-
     public List<Cell> getNeighbourCandidates(int x, int y) {
-        // TODO: Refactor using Tiles.getNeighbouringCandidates
         List<Cell> neighbors = new ArrayList<>();
-        if (x > 0) neighbors.add(getTileSafe(x - 1, y));
-        if (x < getWidth() - 1) neighbors.add(getTileSafe(x + 1, y));
-        if (y > 0) neighbors.add(getTileSafe(x, y - 1));
-        if (y < getHeight() - 1) neighbors.add(getTileSafe(x, y + 1));
+        Map<String, Vector2i> neighbourOffsets = Tiles.getNeighbouringCandidates();
+
+        for (Vector2i offset : neighbourOffsets.values()) {
+            int nx = x + offset.x();
+            int ny = y + offset.y();
+
+            if (isWithinBounds(nx, ny)) {
+                neighbors.add(getTileSafe(nx, ny));
+            }
+        }
         return neighbors;
+    }
+
+    private boolean isWithinBounds(int x, int y) {
+        return x >= 0 && x < getWidth() && y >= 0 && y < getHeight();
     }
 
     protected Cell getTile(int x, int y) {
