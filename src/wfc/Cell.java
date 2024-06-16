@@ -75,7 +75,7 @@ public abstract class Cell implements Comparable<Cell> {
     }
 
 
-    public void updateNeighbours(Grid grid, int[][] entropyMap) {
+    public void updateNeighbours(PriorityQueue<Cell> entropyPriorityQueue, Set<Cell> queue, Grid grid, int[][] entropyMap) {
 
         updateEntropy(entropyMap);
 
@@ -83,6 +83,10 @@ public abstract class Cell implements Comparable<Cell> {
         for(Cell neighbour : neighbours) {
             if(neighbour.isCollapsed()) {
                 continue;
+            }
+            if (!neighbour.isCollapsed() && !queue.contains(neighbour)) {
+                entropyPriorityQueue.offer(neighbour);
+                queue.add(neighbour);
             }
             neighbour.potentialTiles.retainAll(this.getState().getPotentialAdjacency());
             neighbour.updateEntropy(entropyMap);

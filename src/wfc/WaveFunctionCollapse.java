@@ -11,9 +11,14 @@ public abstract class WaveFunctionCollapse {
 
     private int[][] entropyMap;
 
+    private PriorityQueue<Cell> priorityQueue;
+    private Set<Cell> inQueue;
+
     public void init(Grid grid) {
         this.entropyMap = new int[grid.getWidth()][grid.getHeight()];
         this.grid = grid;
+        this.priorityQueue = new PriorityQueue<>(Comparator.comparingInt(cell -> entropyMap[cell.getPosition()[0]][cell.getPosition()[1]]));
+        this.inQueue = new HashSet<>();
         Tiles.initDefaultNeighbouringCandidates();
     }
 
@@ -68,6 +73,10 @@ public abstract class WaveFunctionCollapse {
         for (int i = 0; i < entropyMap.length; i++) {
             for (int j = 0; j < entropyMap[i].length; j++) {
                 entropyMap[i][j] = grid.getTile(i, j).getAllowedNeighbours().size();
+                if (!grid.getTile(i, j).isCollapsed()) {
+                    priorityQueue.offer(grid.getTile(i, j));
+                    inQueue.add(grid.getTile(i, j));
+                }
             }
         }
     }
@@ -89,41 +98,25 @@ public abstract class WaveFunctionCollapse {
     }
 
     private Cell findRandomLowestEntropyCell() {
-        // TODO: Improve efficiency, takes approximately 80% of compute time
-        List<Cell> lowestEntropyCells = new ArrayList<>();
-        int lowestEntropy = Integer.MAX_VALUE;
+        while (!priorityQueue.isEmpty()) {
+            Cell cell = priorityQueue.poll(); // Get the cell with the lowest entropy
+            inQueue.remove(cell); // Remove it from the inQueue set
 
-        for (int x = 0; x < entropyMap.length; x++) {
-            for (int y = 0; y < entropyMap[x].length; y++) {
-                int entropy = entropyMap[x][y];
-                Cell cell = grid.getTile(x, y);
-                if (cell.isCollapsed()) {
-                    continue;
-                }
-                if (entropy < lowestEntropy) {
-                    lowestEntropy = entropy;
-                    lowestEntropyCells.clear();
-                    lowestEntropyCells.add(cell);
-                } else if (entropy == lowestEntropy) {
-                    lowestEntropyCells.add(cell);
-                }
+            // Check if the cell has not collapsed yet
+            if (!cell.isCollapsed()) {
+                return cell;
             }
         }
-
-        if (lowestEntropyCells.isEmpty()) {
-            return null;
-        }
-
-        Random random = new Random();
-        return lowestEntropyCells.get(random.nextInt(lowestEntropyCells.size()));
+        return null; // If the queue is empty and no cell is found
     }
+
 
     private void collapseState(int x, int y) {
         grid.getTile(x, y).fixState();
     }
 
-    private void updateNeighbours (int x, int y) {
-        grid.getTile(x, y).updateNeighbours(grid, entropyMap);
+    private void updateNeighbours(int x, int y) {
+        grid.getTile(x, y).updateNeighbours(priorityQueue, inQueue, grid, entropyMap);
     }
 
 
