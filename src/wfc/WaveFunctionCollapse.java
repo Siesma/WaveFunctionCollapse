@@ -19,10 +19,9 @@ public abstract class WaveFunctionCollapse {
         this.grid = grid;
         this.priorityQueue = new PriorityQueue<>(Comparator.comparingInt(cell -> entropyMap[cell.getPosition()[0]][cell.getPosition()[1]]));
         this.inQueue = new HashSet<>();
-        Tiles.initDefaultNeighbouringCandidates();
     }
 
-    public void collapse() {
+    public boolean collapse() {
         // call setFixedStates before this!!!
         initPotentialStatesOfGrid();
 //        setFixedStates(
@@ -39,11 +38,16 @@ public abstract class WaveFunctionCollapse {
             Cell selectecCell = findRandomLowestEntropyCell();
 
             if (selectecCell == null) break;
-            collapseState(selectecCell.getPosition()[0], selectecCell.getPosition()[1]);
+            boolean successfull = collapseState(selectecCell.getPosition()[0], selectecCell.getPosition()[1]);
+
+            if(!successfull) {
+                return false;
+            }
 
             updateNeighbours(selectecCell.getPosition()[0], selectecCell.getPosition()[1]);
             propagateConstraints(selectecCell);
         }
+        return true;
     }
 
     private void propagateConstraints(Cell parent) {
@@ -111,7 +115,6 @@ public abstract class WaveFunctionCollapse {
             Cell cell = priorityQueue.poll(); // Get the cell with the lowest entropy
             inQueue.remove(cell); // Remove it from the inQueue set
 
-            // Check if the cell has not collapsed yet
             if (!cell.isCollapsed()) {
                 return cell;
             }
@@ -120,8 +123,8 @@ public abstract class WaveFunctionCollapse {
     }
 
 
-    private void collapseState(int x, int y) {
-        grid.getTile(x, y).fixState();
+    private boolean collapseState(int x, int y) {
+        return grid.getTile(x, y).fixState();
     }
 
     private void updateNeighbours(int x, int y) {

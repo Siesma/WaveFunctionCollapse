@@ -1,11 +1,9 @@
 import example.TileGrid;
+import example.tiles.*;
 import processing.core.PApplet;
 import wfc.WaveFunctionCollapse;
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;
-import example.tiles.Forest;
-import example.tiles.Ground;
-import example.tiles.Water;
 
 import java.util.HashSet;
 
@@ -35,7 +33,9 @@ public class Main extends PApplet {
                 // Set the color based on the tile's state
                 switch (state.getRepresentation()) {
                     case "Forest" -> fill(0, 255, 0);  // RGB for green
+                    case "DeepForest" -> fill(0, 128, 0);  // RGB for green
                     case "Water" -> fill(0, 0, 255);   // RGB for blue
+                    case "DeepWater" -> fill(0, 0, 128);   // RGB for deepblue
                     case "Ground" -> fill(255, 127, 0); // RGB for orange
                     default -> fill(255); // White for unknown states (default)
                 }
@@ -47,56 +47,55 @@ public class Main extends PApplet {
     }
 
     @Override
-    public void mousePressed () {
-        setup();
+    public void mousePressed() {
+
+        long start = System.currentTimeMillis();
+        int tries = generate(0);
+        long end = System.currentTimeMillis();
+
+        System.out.printf("It took %s ms after %s tries\n", (end - start), tries+1);
     }
 
 
     @Override
     public void setup() {
 
-        Tile forest = new Forest();
-        Tile ground = new Ground();
-        Tile water = new Water();
+        Tiles.registerTileCandidate(new Forest());
+        Tiles.registerTileCandidate(new Ground());
+        Tiles.registerTileCandidate(new Water());
+        Tiles.registerTileCandidate(new DeepWater());
+        Tiles.registerTileCandidate(new DeepForest());
 
-        Tiles.registerTileCandidate(forest, forest.getRepresentation());
-        Tiles.registerTileCandidate(ground, ground.getRepresentation());
-        Tiles.registerTileCandidate(water, water.getRepresentation());
+
+
+        Tiles.initDefaultNeighbouringCandidates();
 
         allExistingTiles = Tiles.allTiles();
 
+        long start = System.currentTimeMillis();
+        int tries = generate(0);
+        long end = System.currentTimeMillis();
 
-        int n = 10;
+        System.out.printf("It took %s ms after %s tries\n", (end - start), tries+1);
 
-        int maxTries = 1;
+    }
 
-        int tries = 0;
-
-        while (tries++ < maxTries) {
-            System.out.println("Try: " + tries);
-            try {
-
-                grid = new TileGrid(n, n, allExistingTiles);
-
-                long start = System.currentTimeMillis();
-
-                WaveFunctionCollapse wfc = new WaveFunctionCollapse() {
-                };
-                wfc.init(grid);
-                wfc.collapse();
-
-                long end = System.currentTimeMillis();
-
-                System.out.printf("It took %s ms after %s tries", (end - start), tries);
-                return;
-            } catch (Exception e) {
-
-                e.printStackTrace();
-
-            }
+    public int generate(int curTry) {
+        if(curTry >= 10) {
+            System.err.println("Could not find suitable wave state");
+            return -1;
         }
+        int n = 10;
+        grid = new TileGrid(n, n, allExistingTiles);
+        WaveFunctionCollapse wfc = new WaveFunctionCollapse() {
+        };
+        wfc.init(grid);
 
-
+        boolean suc = wfc.collapse();
+        if(!suc) {
+            return generate(curTry + 1);
+        }
+        return curTry;
     }
 
     @Override

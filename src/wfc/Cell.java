@@ -45,9 +45,12 @@ public abstract class Cell implements Comparable<Cell> {
         return state;
     }
 
-    public void fixState() {
+    public boolean fixState() {
         Random random = new Random();
-
+        if(potentialTiles.isEmpty()) {
+            System.err.printf("Cell (%s, %s) has no valid state\n", position[0], position[1]);
+            return false;
+        }
         List<Tile> tileList = new ArrayList<>(potentialTiles);
 
         int index = random.nextInt(tileList.size());
@@ -58,6 +61,7 @@ public abstract class Cell implements Comparable<Cell> {
 
         potentialTiles.retainAll(Collections.singleton(newState));
         this.numTiles = 1;
+        return true;
     }
 
 

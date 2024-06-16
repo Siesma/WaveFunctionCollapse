@@ -33,6 +33,10 @@ public class Tiles {
 
     }
 
+    public static void registerTileCandidate (Tile tile) {
+        registerTileCandidate(tile, tile.getRepresentation());
+    }
+
     public static void registerTileCandidate(Tile tile, String representation) {
         System.out.printf("Registering %s as a Tile candidate.\n", representation);
         if (allTiles.containsKey(representation)) {
