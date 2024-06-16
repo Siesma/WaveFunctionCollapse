@@ -24,8 +24,8 @@ public class Main extends PApplet {
     public void draw() {
         background(0); // Clear the background with black
 
-        int w = width / grid.getWidth();  // Calculate width of each cell
-        int h = height / grid.getHeight(); // Calculate height of each cell
+        float w = (float) width / grid.getWidth();  // Calculate width of each cell
+        float h = (float) height / grid.getHeight(); // Calculate height of each cell
 
         for (int i = 0; i < grid.getWidth(); i++) {
             for (int j = 0; j < grid.getHeight(); j++) {
@@ -46,6 +46,11 @@ public class Main extends PApplet {
         }
     }
 
+    @Override
+    public void mousePressed () {
+        setup();
+    }
+
 
     @Override
     public void setup() {
@@ -61,7 +66,7 @@ public class Main extends PApplet {
         allExistingTiles = Tiles.allTiles();
 
 
-        int n = 100;
+        int n = 10;
 
         int maxTries = 1;
 
@@ -96,7 +101,7 @@ public class Main extends PApplet {
 
     @Override
     public void settings() {
-        size(800, 800);
+        size(1920, 1080);
     }
 
 }

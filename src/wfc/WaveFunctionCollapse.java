@@ -23,8 +23,17 @@ public abstract class WaveFunctionCollapse {
     }
 
     public void collapse() {
+        // call setFixedStates before this!!!
         initPotentialStatesOfGrid();
-        setFixedStates();
+//        setFixedStates(
+//            new Triplet(0, 0, Tiles.getTile("Forest")),
+//            new Triplet(1, 0, Tiles.getTile("Forest")),
+//            new Triplet(2, 0, Tiles.getTile("Forest")),
+//            new Triplet(3, 0, Tiles.getTile("Forest")),
+//            new Triplet(4, 0, Tiles.getTile("Forest")),
+//            new Triplet(5, 0, Tiles.getTile("Forest")),
+//            new Triplet(6, 0, Tiles.getTile("Forest"))
+//        );
         computeEntropyMap();
         while (!hasFullyCollapsed()) {
             Cell selectecCell = findRandomLowestEntropyCell();
@@ -93,7 +102,7 @@ public abstract class WaveFunctionCollapse {
     private void setFixedStates(Triplet... states) {
         for (Triplet t : states) {
             Set<Tile> tiles = new HashSet<>(List.of(t.tiles()));
-            grid.getTileSafe(t.x(), t.y()).removeSetsFromPotentialTiles(tiles);
+            grid.getTileSafe(t.x(), t.y()).retainSetsFromPotentialTiles(tiles);
         }
     }
 

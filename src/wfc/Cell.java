@@ -24,8 +24,8 @@ public abstract class Cell implements Comparable<Cell> {
         this.numTiles = potentialTiles.size();
     }
 
-    protected void removeSetsFromPotentialTiles(Set<Tile> alteredStates) {
-        this.potentialTiles.removeAll(alteredStates);
+    protected void retainSetsFromPotentialTiles(Set<Tile> alteredStates) {
+        this.potentialTiles.retainAll(alteredStates);
         this.numTiles = potentialTiles.size();
     }
 
