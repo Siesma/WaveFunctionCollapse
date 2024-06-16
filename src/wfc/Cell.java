@@ -92,7 +92,16 @@ public abstract class Cell implements Comparable<Cell> {
                 entropyPriorityQueue.offer(neighbour);
                 queue.add(neighbour);
             }
-            neighbour.potentialTiles.retainAll(this.getState().getPotentialAdjacency());
+
+
+            Set<Tile> myAllowedNeighbours = new HashSet<>();
+
+            for (Tile tile : this.potentialTiles) {
+                myAllowedNeighbours.addAll(tile.getPotentialAdjacency());
+            }
+
+
+            neighbour.potentialTiles.retainAll(myAllowedNeighbours);
             neighbour.updateEntropy(entropyMap);
         }
 

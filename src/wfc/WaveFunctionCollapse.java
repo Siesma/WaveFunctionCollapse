@@ -19,20 +19,11 @@ public abstract class WaveFunctionCollapse {
         this.grid = grid;
         this.priorityQueue = new PriorityQueue<>(Comparator.comparingInt(cell -> entropyMap[cell.getPosition()[0]][cell.getPosition()[1]]));
         this.inQueue = new HashSet<>();
+        initPotentialStatesOfGrid();
     }
 
     public boolean collapse() {
         // call setFixedStates before this!!!
-        initPotentialStatesOfGrid();
-//        setFixedStates(
-//            new Triplet(0, 0, Tiles.getTile("Forest")),
-//            new Triplet(1, 0, Tiles.getTile("Forest")),
-//            new Triplet(2, 0, Tiles.getTile("Forest")),
-//            new Triplet(3, 0, Tiles.getTile("Forest")),
-//            new Triplet(4, 0, Tiles.getTile("Forest")),
-//            new Triplet(5, 0, Tiles.getTile("Forest")),
-//            new Triplet(6, 0, Tiles.getTile("Forest"))
-//        );
         computeEntropyMap();
         while (!hasFullyCollapsed()) {
             Cell selectecCell = findRandomLowestEntropyCell();
@@ -103,10 +94,11 @@ public abstract class WaveFunctionCollapse {
         }
     }
 
-    private void setFixedStates(Triplet... states) {
+    public void setFixedStates(Triplet... states) {
         for (Triplet t : states) {
             Set<Tile> tiles = new HashSet<>(List.of(t.tiles()));
             grid.getTileSafe(t.x(), t.y()).retainSetsFromPotentialTiles(tiles);
+            updateNeighbours(t.x(), t.y());
         }
     }
 

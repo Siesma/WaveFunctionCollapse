@@ -1,6 +1,7 @@
 import example.TileGrid;
 import example.tiles.*;
 import processing.core.PApplet;
+import wfc.Triplet;
 import wfc.WaveFunctionCollapse;
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;
@@ -53,7 +54,7 @@ public class Main extends PApplet {
         int tries = generate(0);
         long end = System.currentTimeMillis();
 
-        System.out.printf("It took %s ms after %s tries\n", (end - start), tries+1);
+        System.out.printf("It took %s ms after %s tries\n", (end - start), tries + 1);
     }
 
 
@@ -67,7 +68,6 @@ public class Main extends PApplet {
         Tiles.registerTileCandidate(new DeepForest());
 
 
-
         Tiles.initDefaultNeighbouringCandidates();
 
         allExistingTiles = Tiles.allTiles();
@@ -76,12 +76,12 @@ public class Main extends PApplet {
         int tries = generate(0);
         long end = System.currentTimeMillis();
 
-        System.out.printf("It took %s ms after %s tries\n", (end - start), tries+1);
+        System.out.printf("It took %s ms after %s tries\n", (end - start), tries + 1);
 
     }
 
     public int generate(int curTry) {
-        if(curTry >= 10) {
+        if (curTry >= 10) {
             System.err.println("Could not find suitable wave state");
             return -1;
         }
@@ -91,8 +91,18 @@ public class Main extends PApplet {
         };
         wfc.init(grid);
 
+        wfc.setFixedStates(
+                new Triplet(0, 0, Tiles.getTile("DeepForest")),
+                new Triplet(1, 0, Tiles.getTile("Forest")),
+                new Triplet(2, 0, Tiles.getTile("Forest")),
+                new Triplet(3, 0, Tiles.getTile("Forest")),
+                new Triplet(4, 0, Tiles.getTile("Forest")),
+                new Triplet(5, 0, Tiles.getTile("Forest")),
+                new Triplet(6, 0, Tiles.getTile("Forest"))
+            );
+
         boolean suc = wfc.collapse();
-        if(!suc) {
+        if (!suc) {
             return generate(curTry + 1);
         }
         return curTry;
