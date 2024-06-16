@@ -15,17 +15,22 @@ public class Tiles {
         neighbouringCandidates = new HashMap<>();
     }
 
-    public static void initDefaultNeighbouringCandidates () {
+    public static void initDefaultNeighbouringCandidates() {
         registerNeighbourCandidate("Up", 0, 1); // up
         registerNeighbourCandidate("Down", 0, -1); // down
         registerNeighbourCandidate("Left", -1, 0); // left
         registerNeighbourCandidate("Right", 1, 0); // right
+
+        registerNeighbourCandidate("UpRight", 1, -1);  // upright
+        registerNeighbourCandidate("UpLeft", -1, -1);  // upleft
+        registerNeighbourCandidate("DownRight", 1, 1); // downright
+        registerNeighbourCandidate("DownLeft", -1, 1); // downleft
     }
 
     public static void registerNeighbourCandidate(String representation, int x, int y) {
         Vector2i vec = new Vector2i(x, y);
         System.out.printf("Registering %s as a neighbouring candidate with coordinates %s.\n", representation, vec);
-        if(neighbouringCandidates.containsKey(representation)) {
+        if (neighbouringCandidates.containsKey(representation)) {
             System.err.println("There already exists a neighbouring candidate with said representation");
             return;
         }
@@ -33,7 +38,7 @@ public class Tiles {
 
     }
 
-    public static void registerTileCandidate (Tile tile) {
+    public static void registerTileCandidate(Tile tile) {
         registerTileCandidate(tile, tile.getRepresentation());
     }
 
