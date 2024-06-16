@@ -1,4 +1,4 @@
-package wfc.pattern.tiles;
+package example.tiles;
 
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;

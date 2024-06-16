@@ -3,9 +3,9 @@ package example;
 import wfc.WaveFunctionCollapse;
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;
-import wfc.pattern.tiles.Forest;
-import wfc.pattern.tiles.Ground;
-import wfc.pattern.tiles.Water;
+import example.tiles.Forest;
+import example.tiles.Ground;
+import example.tiles.Water;
 
 import java.util.HashSet;
 

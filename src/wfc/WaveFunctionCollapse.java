@@ -110,10 +110,9 @@ public abstract class WaveFunctionCollapse {
         }
 
         if (lowestEntropyCells.isEmpty()) {
-            return null; // If no cell was found, return null
+            return null;
         }
 
-        // Randomly select one of the lowest entropy cells
         Random random = new Random();
         return lowestEntropyCells.get(random.nextInt(lowestEntropyCells.size()));
     }

@@ -1,4 +1,4 @@
-package wfc.pattern.tiles;
+package example.tiles;
 
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;
@@ -6,7 +6,7 @@ import wfc.pattern.Tiles;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Forest implements Tile {
+public class Water implements Tile {
 
     static HashSet<Tile> adjacencies;
 
@@ -16,13 +16,13 @@ public class Forest implements Tile {
 
     @Override
     public Set<Tile> getPotentialAdjacency() {
-        adjacencies.add(Tiles.getTile("Forest"));
         adjacencies.add(Tiles.getTile("Ground"));
+        adjacencies.add(Tiles.getTile("Water"));
         return adjacencies;
     }
 
     @Override
     public String getRepresentation() {
-        return "Forest";
+        return "Water";
     }
 }
