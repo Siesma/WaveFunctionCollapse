@@ -96,6 +96,7 @@ public abstract class Cell implements Comparable<Cell> {
 
             Set<Tile> myAllowedNeighbours = new HashSet<>();
 
+            Vector2i positionDifference = grid.getOffsetFromCell(this, neighbour);
             for (Tile tile : this.potentialTiles) {
                 myAllowedNeighbours.addAll(tile.getPotentialAdjacency());
             }

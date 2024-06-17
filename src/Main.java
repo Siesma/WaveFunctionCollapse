@@ -60,15 +60,17 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
-
-        Tiles.registerTileCandidate(new Forest());
-        Tiles.registerTileCandidate(new Ground());
-        Tiles.registerTileCandidate(new Water());
-        Tiles.registerTileCandidate(new DeepWater());
-        Tiles.registerTileCandidate(new DeepForest());
-
-
         Tiles.initDefaultNeighbouringCandidates();
+
+        Tiles.registerTileCandidate(
+            new Forest(),
+            new Ground(),
+            new Water(),
+            new DeepWater(),
+            new DeepForest()
+        );
+
+        Tiles.initAdjacencyOfAllTiles();
 
         allExistingTiles = Tiles.allTiles();
 
@@ -92,14 +94,14 @@ public class Main extends PApplet {
         wfc.init(grid);
 
         wfc.setFixedStates(
-                new Triplet(0, 0, Tiles.getTile("DeepForest")),
-                new Triplet(1, 0, Tiles.getTile("Forest")),
-                new Triplet(2, 0, Tiles.getTile("Forest")),
-                new Triplet(3, 0, Tiles.getTile("Forest")),
-                new Triplet(4, 0, Tiles.getTile("Forest")),
-                new Triplet(5, 0, Tiles.getTile("Forest")),
-                new Triplet(6, 0, Tiles.getTile("Forest"))
-            );
+            new Triplet(0, 0, Tiles.getTile("DeepForest")),
+            new Triplet(1, 0, Tiles.getTile("Forest")),
+            new Triplet(2, 0, Tiles.getTile("Forest")),
+            new Triplet(3, 0, Tiles.getTile("Forest")),
+            new Triplet(4, 0, Tiles.getTile("Forest")),
+            new Triplet(5, 0, Tiles.getTile("Forest")),
+            new Triplet(6, 0, Tiles.getTile("Forest"))
+        );
 
         boolean suc = wfc.collapse();
         if (!suc) {

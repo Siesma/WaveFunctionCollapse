@@ -31,7 +31,6 @@ public class Water implements Tile {
 
     @Override
     public Set<Tile> getPotentialAdjacency(Vector2i neighbouring) {
-        System.out.println();
         return adjacencies.get(neighbouring);
     }
 
