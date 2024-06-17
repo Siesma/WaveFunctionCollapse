@@ -12,23 +12,31 @@ public class Water implements Tile {
 
     static HashMap<Vector2i, HashSet<Tile>> adjacencies;
 
-    static {
+    @Override
+    public void initAdjacencies() {
         adjacencies = new HashMap<>();
         adjacencies.put(defaultNeighbouringVector, new HashSet<>());
         for(Vector2i vec : Tiles.getNeighbouringCandidates().values()) {
             adjacencies.put(vec, new HashSet<>());
         }
+
+        adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Ground"));
+        adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Water"));
+
+        for(Vector2i vec : Tiles.getNeighbouringCandidates().values()) {
+            adjacencies.get(vec).add(Tiles.getTile("Ground"));
+            adjacencies.get(vec).add(Tiles.getTile("Water"));
+        }
     }
 
     @Override
     public Set<Tile> getPotentialAdjacency(Vector2i neighbouring) {
-        return null;
+        System.out.println();
+        return adjacencies.get(neighbouring);
     }
 
     @Override
     public Set<Tile> getPotentialAdjacency() {
-        adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Ground"));
-        adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Water"));
         return adjacencies.get(defaultNeighbouringVector);
     }
 

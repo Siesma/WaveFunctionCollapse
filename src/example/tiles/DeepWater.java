@@ -13,11 +13,20 @@ public class DeepWater implements Tile {
 
     static HashMap<Vector2i, HashSet<Tile>> adjacencies;
 
-    static {
+    @Override
+    public void initAdjacencies() {
         adjacencies = new HashMap<>();
         adjacencies.put(defaultNeighbouringVector, new HashSet<>());
         for(Vector2i vec : Tiles.getNeighbouringCandidates().values()) {
             adjacencies.put(vec, new HashSet<>());
+        }
+
+        adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Water"));
+        adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("DeepWater"));
+
+        for(Vector2i vec : Tiles.getNeighbouringCandidates().values()) {
+            adjacencies.get(vec).add(Tiles.getTile("Water"));
+            adjacencies.get(vec).add(Tiles.getTile("DeepWater"));
         }
     }
 
@@ -28,10 +37,9 @@ public class DeepWater implements Tile {
 
     @Override
     public Set<Tile> getPotentialAdjacency() {
-        adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Water"));
-        adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("DeepWater"));
         return adjacencies.get(defaultNeighbouringVector);
     }
+
 
     @Override
     public String getRepresentation() {

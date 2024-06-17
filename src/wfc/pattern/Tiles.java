@@ -43,6 +43,7 @@ public class Tiles {
     }
 
     public static void registerTileCandidate(Tile tile, String representation) {
+        tile.initAdjacencies();
         System.out.printf("Registering %s as a Tile candidate.\n", representation);
         if (allTiles.containsKey(representation)) {
             System.err.println("There already exists a tile with said representation");

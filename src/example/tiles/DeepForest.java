@@ -9,28 +9,35 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DeepForest  implements Tile {
+public class DeepForest implements Tile {
 
     static HashMap<Vector2i, HashSet<Tile>> adjacencies;
 
-    static {
+    @Override
+    public void initAdjacencies() {
         adjacencies = new HashMap<>();
         adjacencies.put(defaultNeighbouringVector, new HashSet<>());
-        for(Vector2i vec : Tiles.getNeighbouringCandidates().values()) {
+        for (Vector2i vec : Tiles.getNeighbouringCandidates().values()) {
             adjacencies.put(vec, new HashSet<>());
         }
-    }
 
+        adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Forest"));
+        adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("DeepForest"));
+
+        for (Vector2i vec : Tiles.getNeighbouringCandidates().values()) {
+            adjacencies.get(vec).add(Tiles.getTile("Forest"));
+            adjacencies.get(vec).add(Tiles.getTile("DeepForest"));
+        }
+
+    }
 
     @Override
     public Set<Tile> getPotentialAdjacency(Vector2i neighbouring) {
-        return null;
+        return adjacencies.get(neighbouring);
     }
 
     @Override
     public Set<Tile> getPotentialAdjacency() {
-        adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Forest"));
-        adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("DeepForest"));
         return adjacencies.get(defaultNeighbouringVector);
     }
 

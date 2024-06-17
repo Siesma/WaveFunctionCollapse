@@ -14,6 +14,8 @@ public interface Tile {
     // TODO: Update getPotentialAdjacency method to not be updated >every< call.
     Set<Tile> getPotentialAdjacency();
 
+    void initAdjacencies();
+
     default String getRepresentation() {
         return getClass().getSimpleName();
     }
