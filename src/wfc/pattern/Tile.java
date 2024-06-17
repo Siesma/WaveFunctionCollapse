@@ -7,10 +7,11 @@ import java.util.Set;
 
 public interface Tile {
 
-//    HashMap<Vector2i, Set<Tile>> allAdjacenct();
-//
-//    Set<Tile> getPotentialAdjacency (Vector2i neighbouring);
+    static Vector2i defaultNeighbouringVector = new Vector2i(0, 0);
 
+    Set<Tile> getPotentialAdjacency (Vector2i neighbouring);
+
+    // TODO: Update getPotentialAdjacency method to not be updated >every< call.
     Set<Tile> getPotentialAdjacency();
 
     default String getRepresentation() {
