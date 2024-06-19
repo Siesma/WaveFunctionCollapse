@@ -51,6 +51,8 @@ public abstract class WaveFunctionCollapse {
                 continue;
             }
             int[] neighbourPos = neighbour.getPosition();
+            // TODO: Change Set<Tile> to HashMap<Vector2i, Set<Tile>> for relative adjacency
+
             Set<Tile> previousState = new HashSet<>(neighbour.getAllowedNeighbours());
             updateNeighbours(neighbourPos[0], neighbourPos[1]);
 
@@ -75,7 +77,7 @@ public abstract class WaveFunctionCollapse {
     private void computeEntropyMap() {
         for (int i = 0; i < entropyMap.length; i++) {
             for (int j = 0; j < entropyMap[i].length; j++) {
-                entropyMap[i][j] = grid.getTile(i, j).getAllowedNeighbours().size();
+                entropyMap[i][j] = grid.getTile(i, j).computeEntropy();
                 if (!grid.getTile(i, j).isCollapsed()) {
                     priorityQueue.offer(grid.getTile(i, j));
                     inQueue.add(grid.getTile(i, j));
