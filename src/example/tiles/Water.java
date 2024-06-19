@@ -12,7 +12,7 @@ public class Water extends Tile{
         super();
     }
     @Override
-    public void initAdjacencies() {
+    public void initAdjacency() {
         adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Ground"));
         adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Water"));
 

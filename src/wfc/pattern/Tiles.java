@@ -49,7 +49,7 @@ public class Tiles {
 
     public static void initAdjacencyOfAllTiles () {
         for(Tile t : allTiles.values()) {
-            t.initAdjacencies();
+            t.initAdjacency();
         }
     }
 

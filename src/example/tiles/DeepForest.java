@@ -13,7 +13,7 @@ public class DeepForest extends Tile {
         super();
     }
     @Override
-    public void initAdjacencies() {
+    public void initAdjacency() {
         adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Forest"));
         adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("DeepForest"));
 

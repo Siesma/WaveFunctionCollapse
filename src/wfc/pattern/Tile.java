@@ -18,14 +18,14 @@ public abstract class Tile {
         }
     }
 
-    public Vector2i defaultNeighbouringVector = new Vector2i(0, 0);
+    protected static Vector2i defaultNeighbouringVector = new Vector2i(0, 0);
 
     public abstract Set<Tile> getPotentialAdjacency(Vector2i neighbouring);
 
     // TODO: Update getPotentialAdjacency method to not be updated >every< call.
     public abstract Set<Tile> getPotentialAdjacency();
 
-    public abstract void initAdjacencies();
+    public abstract void initAdjacency();
 
     public String getRepresentation() {
         return getClass().getSimpleName();

@@ -12,7 +12,7 @@ public class DeepWater extends Tile {
         super();
     }
     @Override
-    public void initAdjacencies() {
+    public void initAdjacency() {
         adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Water"));
         adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("DeepWater"));
 
