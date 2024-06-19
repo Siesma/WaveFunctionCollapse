@@ -47,4 +47,4 @@ Now the algorithm can be applied:
 - If 'success' == false -> the algorithm could not collapse onto a state that suffices all adjacency rules
 
 ## Example: 
-[Main file](src/Main)
+[Main file](src/Main.java)
