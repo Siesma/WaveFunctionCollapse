@@ -4,22 +4,15 @@ import wfc.Vector2i;
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
-public class Water implements Tile {
+public class Water extends Tile{
 
-    static HashMap<Vector2i, HashSet<Tile>> adjacencies;
-
+    public Water () {
+        super();
+    }
     @Override
     public void initAdjacencies() {
-        adjacencies = new HashMap<>();
-        adjacencies.put(defaultNeighbouringVector, new HashSet<>());
-        for(Vector2i vec : Tiles.getNeighbouringCandidates().values()) {
-            adjacencies.put(vec, new HashSet<>());
-        }
-
         adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Ground"));
         adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Water"));
 

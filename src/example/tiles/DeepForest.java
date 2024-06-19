@@ -4,23 +4,16 @@ import wfc.Vector2i;
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;
 
-import javax.print.attribute.HashPrintServiceAttributeSet;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
-public class DeepForest implements Tile {
+public class DeepForest extends Tile {
 
-    static HashMap<Vector2i, HashSet<Tile>> adjacencies;
 
+    public DeepForest () {
+        super();
+    }
     @Override
     public void initAdjacencies() {
-        adjacencies = new HashMap<>();
-        adjacencies.put(defaultNeighbouringVector, new HashSet<>());
-        for (Vector2i vec : Tiles.getNeighbouringCandidates().values()) {
-            adjacencies.put(vec, new HashSet<>());
-        }
-
         adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("Forest"));
         adjacencies.get(defaultNeighbouringVector).add(Tiles.getTile("DeepForest"));
 

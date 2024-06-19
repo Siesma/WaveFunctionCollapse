@@ -27,7 +27,7 @@ public class Tiles {
         registerNeighbourCandidate("DownLeft", -1, 1); // downleft
     }
 
-    public static void regsiterNeighbourCandidate (String representation, Vector2i vec) {
+    public static void registerNeighbouringCandidate(String representation, Vector2i vec) {
         System.out.printf("Registering %s as a neighbouring candidate with coordinates %s.\n", representation, vec);
         if (neighbouringCandidates.containsKey(representation)) {
             System.err.println("There already exists a neighbouring candidate with said representation");
@@ -38,7 +38,7 @@ public class Tiles {
     }
 
     public static void registerNeighbourCandidate(String representation, int x, int y) {
-        regsiterNeighbourCandidate(representation, new Vector2i(x, y));
+        registerNeighbouringCandidate(representation, new Vector2i(x, y));
     }
 
     public static void registerTileCandidate(Tile... tiles) {
