@@ -8,6 +8,7 @@ import example.tiles.Ground;
 import example.tiles.Water;
 
 import java.util.HashSet;
+import java.util.function.Supplier;
 
 public class Main {
 
@@ -32,7 +33,12 @@ public class Main {
             System.out.println("Try: " + tries);
             try {
 
-                TileGrid grid = new TileGrid(n, n, set);
+                TileGrid grid = new TileGrid(set, new Supplier<TileCell[][]>() {
+                    @Override
+                    public TileCell[][] get() {
+                        return new TileCell[n][n];
+                    }
+                });
 
                 long start = System.currentTimeMillis();
 

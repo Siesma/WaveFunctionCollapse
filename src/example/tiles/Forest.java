@@ -29,7 +29,6 @@ public class Forest extends Tile {
 
     @Override
     public Set<Tile> getPotentialAdjacency() {
-
         return adjacencies.get(defaultNeighbouringVector);
     }
 

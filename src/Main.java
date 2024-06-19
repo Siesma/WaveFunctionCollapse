@@ -1,3 +1,4 @@
+import example.TileCell;
 import example.TileGrid;
 import example.tiles.*;
 import processing.core.PApplet;
@@ -5,6 +6,8 @@ import wfc.Triplet;
 import wfc.WaveFunctionCollapse;
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;
+
+import java.util.function.Supplier;
 
 public class Main extends PApplet {
 
@@ -79,7 +82,12 @@ public class Main extends PApplet {
             return -1;
         }
         int n = 100;
-        grid = new TileGrid(n, n, Tiles.allTiles());
+        grid = new TileGrid(Tiles.allTiles(), new Supplier<TileCell[][]>() {
+            @Override
+            public TileCell[][] get() {
+                return new TileCell[n][n];
+            }
+        });
         WaveFunctionCollapse wfc = new WaveFunctionCollapse() {
         };
         wfc.init(grid);

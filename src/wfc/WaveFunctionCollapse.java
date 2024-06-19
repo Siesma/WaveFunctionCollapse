@@ -6,14 +6,14 @@ import java.util.*;
 
 public abstract class WaveFunctionCollapse {
 
-    private Grid grid;
+    private Grid<? extends Cell> grid;
 
     private int[][] entropyMap;
 
     private PriorityQueue<Cell> priorityQueue;
     private Set<Cell> inQueue;
 
-    public void init(Grid grid) {
+    public void init(Grid<? extends Cell> grid) {
         this.entropyMap = new int[grid.getWidth()][grid.getHeight()];
         this.grid = grid;
         this.priorityQueue = new PriorityQueue<>(Comparator.comparingInt(cell -> entropyMap[cell.getPosition()[0]][cell.getPosition()[1]]));

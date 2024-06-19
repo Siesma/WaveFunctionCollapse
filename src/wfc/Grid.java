@@ -7,15 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
-public abstract class Grid {
+public abstract class Grid<T extends Cell> {
 
-    Cell[][] grid;
+    T[][] grid;
 
     private final Set<Tile> allPossibleTiles;
 
-    public Grid(int w, int h, Set<Tile> allPossibleTiles) {
-        grid = new Cell[w][h];
+    public abstract T createCell(int[] position);
+
+    public Grid(Set<Tile> allPossibleTiles, Supplier<T[][]> gridSupplier) {
+        grid = gridSupplier.get();
         this.allPossibleTiles = allPossibleTiles;
         this.init();
     }
@@ -24,11 +27,11 @@ public abstract class Grid {
         for (int i = 0; i < getWidth(); i++) {
             for (int j = 0; j < getHeight(); j++) {
                 int[] cellPos = {i, j};
-                grid[i][j] = new Cell(cellPos) {
-                };
+                grid[i][j] = createCell(cellPos);
             }
         }
     }
+
     public List<Cell> getNeighbourCandidates(int x, int y) {
         List<Cell> neighbors = new ArrayList<>();
         Map<String, Vector2i> neighbourOffsets = Tiles.getNeighbouringCandidates();
@@ -44,14 +47,14 @@ public abstract class Grid {
         return neighbors;
     }
 
-    public Vector2i getOffsetFromCell (Cell a, Cell b) {
+    public Vector2i getOffsetFromCell(Cell a, Cell b) {
         int dx = b.getPosition()[0] - a.getPosition()[0];
         int dy = b.getPosition()[1] - a.getPosition()[1];
 
         Vector2i dv = new Vector2i(dx, dy);
 
-        for(Vector2i vec : Tiles.getNeighbouringCandidates().values()) {
-            if(dv.compareTo(vec) == 0) {
+        for (Vector2i vec : Tiles.getNeighbouringCandidates().values()) {
+            if (dv.compareTo(vec) == 0) {
                 return vec;
             }
         }
@@ -70,16 +73,6 @@ public abstract class Grid {
     public Cell getTileSafe(int x, int y) {
         int[] safePos = getSafePosition(x, y);
         return getTile(safePos[0], safePos[1]);
-    }
-
-    protected void setTile(Cell newState, int x, int y) {
-        grid[x][y] = newState;
-    }
-
-
-    public void setTileSafe(Cell newState, int x, int y) {
-        int[] safePos = getSafePosition(x, y);
-        setTile(newState, safePos[0], safePos[1]);
     }
 
     protected void setStateOfTile(Tile state, int x, int y) {

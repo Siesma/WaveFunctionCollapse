@@ -47,7 +47,7 @@ public abstract class Cell implements Comparable<Cell> {
 
     public boolean fixState() {
         Random random = new Random();
-        if(potentialTiles.isEmpty()) {
+        if (potentialTiles.isEmpty()) {
             System.err.printf("Cell (%s, %s) has no valid state\n", position[0], position[1]);
             return false;
         }
@@ -79,13 +79,13 @@ public abstract class Cell implements Comparable<Cell> {
     }
 
 
-    public void updateNeighbours(PriorityQueue<Cell> entropyPriorityQueue, Set<Cell> queue, Grid grid, int[][] entropyMap) {
+    public void updateNeighbours(PriorityQueue<Cell> entropyPriorityQueue, Set<Cell> queue, Grid<? extends Cell> grid, int[][] entropyMap) {
 
         updateEntropy(entropyMap);
 
         List<Cell> neighbours = grid.getNeighbourCandidates(position[0], position[1]);
-        for(Cell neighbour : neighbours) {
-            if(neighbour.isCollapsed()) {
+        for (Cell neighbour : neighbours) {
+            if (neighbour.isCollapsed()) {
                 continue;
             }
             if (!neighbour.isCollapsed() && !queue.contains(neighbour)) {
@@ -97,6 +97,7 @@ public abstract class Cell implements Comparable<Cell> {
             Set<Tile> myAllowedNeighbours = new HashSet<>();
 
             Vector2i positionDifference = grid.getOffsetFromCell(this, neighbour);
+
             for (Tile tile : this.potentialTiles) {
                 myAllowedNeighbours.addAll(tile.getPotentialAdjacency());
             }
@@ -116,11 +117,11 @@ public abstract class Cell implements Comparable<Cell> {
         return potentialTiles;
     }
 
-    private void updateEntropy (int[][] entropyMap) {
+    private void updateEntropy(int[][] entropyMap) {
         entropyMap[position[0]][position[1]] = computeEntropy();
     }
 
-    public int computeEntropy () {
+    public int computeEntropy() {
         return getPotentialTiles().size() - 1;
     }
 

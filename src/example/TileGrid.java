@@ -5,10 +5,16 @@ import wfc.Grid;
 import wfc.pattern.Tile;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
-public class TileGrid extends Grid {
-    public TileGrid(int w, int h, Set<Tile> allPossibleTiles) {
-        super(w, h, allPossibleTiles);
+public class TileGrid extends Grid<TileCell> {
+    @Override
+    public TileCell createCell(int[] position) {
+        return new TileCell(position);
+    }
+
+    public TileGrid(Set<Tile> allPossibleTiles, Supplier<TileCell[][]> gridSupplier) {
+        super(allPossibleTiles, gridSupplier);
     }
 
     @Override
