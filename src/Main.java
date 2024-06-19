@@ -49,12 +49,7 @@ public class Main extends PApplet {
 
     @Override
     public void mousePressed() {
-
-        long start = System.currentTimeMillis();
-        int tries = generate(0);
-        long end = System.currentTimeMillis();
-
-        System.out.printf("It took %s ms after %s tries\n", (end - start), tries + 1);
+        generate();
     }
 
 
@@ -74,20 +69,23 @@ public class Main extends PApplet {
 
         allExistingTiles = Tiles.allTiles();
 
+        generate();
+    }
+
+    void generate () {
         long start = System.currentTimeMillis();
         int tries = generate(0);
         long end = System.currentTimeMillis();
 
         System.out.printf("It took %s ms after %s tries\n", (end - start), tries + 1);
-
     }
 
     public int generate(int curTry) {
-        if (curTry >= 10) {
+        if (curTry >= 100) {
             System.err.println("Could not find suitable wave state");
             return -1;
         }
-        int n = 10;
+        int n = 100;
         grid = new TileGrid(n, n, allExistingTiles);
         WaveFunctionCollapse wfc = new WaveFunctionCollapse() {
         };
