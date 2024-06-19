@@ -120,7 +120,7 @@ public abstract class Cell implements Comparable<Cell> {
         entropyMap[position[0]][position[1]] = computeEntropy();
     }
 
-    private int computeEntropy () {
+    public int computeEntropy () {
         return getPotentialTiles().size() - 1;
     }
 
