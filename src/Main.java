@@ -6,14 +6,9 @@ import wfc.WaveFunctionCollapse;
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;
 
-import java.util.HashSet;
-
 public class Main extends PApplet {
 
     private TileGrid grid;
-
-
-    HashSet<Tile> allExistingTiles;
 
     public static void main(String[] args) {
         PApplet.main("Main", args);
@@ -67,12 +62,10 @@ public class Main extends PApplet {
 
         Tiles.initAdjacencyOfAllTiles();
 
-        allExistingTiles = Tiles.allTiles();
-
         generate();
     }
 
-    void generate () {
+    void generate() {
         long start = System.currentTimeMillis();
         int tries = generate(0);
         long end = System.currentTimeMillis();
@@ -86,7 +79,7 @@ public class Main extends PApplet {
             return -1;
         }
         int n = 100;
-        grid = new TileGrid(n, n, allExistingTiles);
+        grid = new TileGrid(n, n, Tiles.allTiles());
         WaveFunctionCollapse wfc = new WaveFunctionCollapse() {
         };
         wfc.init(grid);
