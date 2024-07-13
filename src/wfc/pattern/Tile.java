@@ -19,7 +19,7 @@ public abstract class Tile {
         }
     }
 
-    protected static Vector2i defaultNeighbouringVector = new Simple2DVector().set(0, 0);
+    protected static Vector2i defaultNeighbouringVector = new Simple2DVector().setXY(0, 0);
 
     public abstract Set<Tile> getPotentialAdjacency(Vector2i neighbouring);
 

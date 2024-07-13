@@ -8,7 +8,7 @@ public interface Vector2i extends Comparable<Vector2i> {
 
     String toString();
 
-    Vector2i set (int x, int y);
+    Vector2i setXY (int x, int y);
 
 
     @Override

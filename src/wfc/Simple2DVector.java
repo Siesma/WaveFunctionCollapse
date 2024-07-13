@@ -17,7 +17,7 @@ public class Simple2DVector implements Vector2i {
     }
 
     @Override
-    public Vector2i set(int x, int y) {
+    public Vector2i setXY(int x, int y) {
         this.x = x;
         this.y = y;
         return this;
