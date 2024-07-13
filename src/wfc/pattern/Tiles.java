@@ -17,15 +17,15 @@ public class Tiles {
     }
 
     public static void initDefaultNeighbouringCandidates(Supplier<Vector2i> vector2iSupplier) {
-        registerNeighbourCandidate("Up", vector2iSupplier.get().set(0, 1)); // up
-        registerNeighbourCandidate("Down", vector2iSupplier.get().set(0, -1)); // down
-        registerNeighbourCandidate("Left", vector2iSupplier.get().set(-1, 0)); // left
-        registerNeighbourCandidate("Right", vector2iSupplier.get().set(1, 0)); // right
+        registerNeighbourCandidate("Up", vector2iSupplier.get().setXY(0, 1)); // up
+        registerNeighbourCandidate("Down", vector2iSupplier.get().setXY(0, -1)); // down
+        registerNeighbourCandidate("Left", vector2iSupplier.get().setXY(-1, 0)); // left
+        registerNeighbourCandidate("Right", vector2iSupplier.get().setXY(1, 0)); // right
 
-        registerNeighbourCandidate("UpRight", vector2iSupplier.get().set(1, -1));  // upright
-        registerNeighbourCandidate("UpLeft", vector2iSupplier.get().set(-1, -1));  // upleft
-        registerNeighbourCandidate("DownRight", vector2iSupplier.get().set(1, 1)); // downright
-        registerNeighbourCandidate("DownLeft", vector2iSupplier.get().set(-1, 1)); // downleft
+        registerNeighbourCandidate("UpRight", vector2iSupplier.get().setXY(1, -1));  // upright
+        registerNeighbourCandidate("UpLeft", vector2iSupplier.get().setXY(-1, -1));  // upleft
+        registerNeighbourCandidate("DownRight", vector2iSupplier.get().setXY(1, 1)); // downright
+        registerNeighbourCandidate("DownLeft", vector2iSupplier.get().setXY(-1, 1)); // downleft
     }
 
     public static void registerNeighbouringCandidate(String representation, Vector2i vec) {
