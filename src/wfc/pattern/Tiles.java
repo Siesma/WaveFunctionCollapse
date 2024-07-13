@@ -1,6 +1,5 @@
 package wfc.pattern;
 
-import example.Simple2DVector;
 import wfc.Vector2i;
 
 import java.util.*;

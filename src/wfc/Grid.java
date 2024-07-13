@@ -1,6 +1,5 @@
 package wfc;
 
-import example.Simple2DVector;
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;
 

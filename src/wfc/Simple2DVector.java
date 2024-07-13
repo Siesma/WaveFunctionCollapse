@@ -1,4 +1,4 @@
-package example;
+package wfc;
 
 import wfc.Vector2i;
 

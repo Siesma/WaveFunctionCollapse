@@ -1,4 +1,4 @@
-import example.Simple2DVector;
+import wfc.Simple2DVector;
 import example.TileCell;
 import example.TileGrid;
 import example.tiles.*;
