@@ -1,8 +1,10 @@
+import example.Simple2DVector;
 import example.TileCell;
 import example.TileGrid;
 import example.tiles.*;
 import processing.core.PApplet;
 import wfc.Triplet;
+import wfc.Vector2i;
 import wfc.WaveFunctionCollapse;
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;
@@ -53,7 +55,12 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
-        Tiles.initDefaultNeighbouringCandidates();
+        Tiles.initDefaultNeighbouringCandidates(new Supplier<Vector2i>() {
+            @Override
+            public Vector2i get() {
+                return new Simple2DVector();
+            }
+        });
 
         Tiles.registerTileCandidate(
             new Forest(),

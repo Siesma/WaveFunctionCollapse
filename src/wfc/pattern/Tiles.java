@@ -1,8 +1,10 @@
 package wfc.pattern;
 
+import example.Simple2DVector;
 import wfc.Vector2i;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 public class Tiles {
 
@@ -15,16 +17,16 @@ public class Tiles {
         neighbouringCandidates = new HashMap<>();
     }
 
-    public static void initDefaultNeighbouringCandidates() {
-        registerNeighbourCandidate("Up", 0, 1); // up
-        registerNeighbourCandidate("Down", 0, -1); // down
-        registerNeighbourCandidate("Left", -1, 0); // left
-        registerNeighbourCandidate("Right", 1, 0); // right
+    public static void initDefaultNeighbouringCandidates(Supplier<Vector2i> vector2iSupplier) {
+        registerNeighbourCandidate("Up", vector2iSupplier.get().set(0, 1)); // up
+        registerNeighbourCandidate("Down", vector2iSupplier.get().set(0, -1)); // down
+        registerNeighbourCandidate("Left", vector2iSupplier.get().set(-1, 0)); // left
+        registerNeighbourCandidate("Right", vector2iSupplier.get().set(1, 0)); // right
 
-        registerNeighbourCandidate("UpRight", 1, -1);  // upright
-        registerNeighbourCandidate("UpLeft", -1, -1);  // upleft
-        registerNeighbourCandidate("DownRight", 1, 1); // downright
-        registerNeighbourCandidate("DownLeft", -1, 1); // downleft
+        registerNeighbourCandidate("UpRight", vector2iSupplier.get().set(1, -1));  // upright
+        registerNeighbourCandidate("UpLeft", vector2iSupplier.get().set(-1, -1));  // upleft
+        registerNeighbourCandidate("DownRight", vector2iSupplier.get().set(1, 1)); // downright
+        registerNeighbourCandidate("DownLeft", vector2iSupplier.get().set(-1, 1)); // downleft
     }
 
     public static void registerNeighbouringCandidate(String representation, Vector2i vec) {
@@ -37,8 +39,8 @@ public class Tiles {
 
     }
 
-    public static void registerNeighbourCandidate(String representation, int x, int y) {
-        registerNeighbouringCandidate(representation, new Vector2i(x, y));
+    public static void registerNeighbourCandidate(String representation, Vector2i vec) {
+        registerNeighbouringCandidate(representation, vec);
     }
 
     public static void registerTileCandidate(Tile... tiles) {

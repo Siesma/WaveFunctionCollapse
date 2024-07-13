@@ -1,5 +1,6 @@
 package wfc;
 
+import example.Simple2DVector;
 import wfc.pattern.Tile;
 import wfc.pattern.Tiles;
 
@@ -50,15 +51,11 @@ public abstract class Grid<T extends Cell> {
     public Vector2i getOffsetFromCell(Cell a, Cell b) {
         int dx = b.getPosition()[0] - a.getPosition()[0];
         int dy = b.getPosition()[1] - a.getPosition()[1];
-
-        Vector2i dv = new Vector2i(dx, dy);
-
         for (Vector2i vec : Tiles.getNeighbouringCandidates().values()) {
-            if (dv.compareTo(vec) == 0) {
+            if (vec.x() == dx && vec.y() == dy) {
                 return vec;
             }
         }
-
         return null;
     }
 
