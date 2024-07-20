@@ -30,12 +30,13 @@ public abstract class WaveFunctionCollapse {
             if (selectecCell == null) break;
             boolean successful = collapseState(selectecCell.getPosition()[0], selectecCell.getPosition()[1]);
 
-            if(!successful) {
+            if (!successful) {
                 return false;
             }
 
             updateNeighbours(selectecCell.getPosition()[0], selectecCell.getPosition()[1]);
             propagateConstraints(selectecCell);
+            recomputePriorities();
         }
         return true;
     }
@@ -86,7 +87,6 @@ public abstract class WaveFunctionCollapse {
         }
     }
 
-
     private void initPotentialStatesOfGrid() {
         for (int i = 0; i < grid.getWidth(); i++) {
             for (int j = 0; j < grid.getHeight(); j++) {
@@ -104,17 +104,52 @@ public abstract class WaveFunctionCollapse {
     }
 
     private Cell findRandomLowestEntropyCell() {
-        while (!priorityQueue.isEmpty()) {
-            Cell cell = priorityQueue.poll(); // Get the cell with the lowest entropy
-            inQueue.remove(cell); // Remove it from the inQueue set
+        if (priorityQueue.isEmpty()) {
+            return null;
+        }
+        List<Cell> cellsWithLowestEntropy = new ArrayList<>();
+        int lowestEntropy = computeEntropy(priorityQueue.peek());
+        while (true) {
+            if (priorityQueue.isEmpty()) {
+                break;
+            }
+            Cell curCell = priorityQueue.peek();
+            int curEntropy = computeEntropy(curCell);
+            if (curEntropy != lowestEntropy) {
+                break;
+            }
+            cellsWithLowestEntropy.add(priorityQueue.poll());
+        }
 
+        Random random = new Random();
+        Cell selectedCell = cellsWithLowestEntropy.get(random.nextInt(cellsWithLowestEntropy.size()));
+        inQueue.remove(selectedCell);
+        cellsWithLowestEntropy.remove(selectedCell);
+
+        priorityQueue.addAll(cellsWithLowestEntropy);
+        return selectedCell;
+
+    }
+
+    /**
+     * Deprecated method, was previously @findRandomLowestEntropyCell, but has been replaced
+     * @return
+     */
+    @Deprecated
+    private Cell getFirstLowestEntropyCell() {
+        while (!priorityQueue.isEmpty()) {
+            Cell cell = priorityQueue.poll();
+            inQueue.remove(cell);
             if (!cell.isCollapsed()) {
                 return cell;
             }
         }
-        return null; // If the queue is empty and no cell is found
+        return null;
     }
 
+    private int computeEntropy(Cell cell) {
+        return entropyMap[cell.getPosition()[0]][cell.getPosition()[1]];
+    }
 
     private boolean collapseState(int x, int y) {
         return grid.getTile(x, y).fixState();
@@ -124,5 +159,9 @@ public abstract class WaveFunctionCollapse {
         grid.getTile(x, y).updateNeighbours(priorityQueue, inQueue, grid, entropyMap);
     }
 
-
+    private void recomputePriorities() {
+        List<Cell> allCells = new ArrayList<>(priorityQueue);
+        priorityQueue.clear();
+        priorityQueue.addAll(allCells);
+    }
 }

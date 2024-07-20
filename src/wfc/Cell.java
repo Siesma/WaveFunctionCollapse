@@ -141,4 +141,11 @@ public abstract class Cell implements Comparable<Cell> {
             }
         }
     }
+
+    @Override
+    public String toString () {
+        return String.format("%s\n\t[%s, %s] \n\t\"%s\"\n", computeEntropy(), getPosition()[0], getPosition()[1],
+            potentialTiles.toString());
+    }
+
 }
